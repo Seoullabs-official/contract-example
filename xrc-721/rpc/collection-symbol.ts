@@ -1,28 +1,26 @@
-import { NFTParams } from '../interface/IContract';
+import { initConfigurationReturnKeyPair } from '../utils/initConfig';
 
 const SASEUL = require('saseul');
 
 let op = SASEUL.SmartContract.Operator;
+const SPACE = 'XRC Hans NFT 11';
 
-export function symbol({ writer, space }: NFTParams) {
-  let condition, err_msg, response;
-  let method = new SASEUL.SmartContract.Method({
-    type: 'request',
-    name: 'symbol',
-    version: '1',
-    space: space,
-    writer: writer,
-  });
+(async function () {
+  try {
+    let { keypair } = await initConfigurationReturnKeyPair();
 
-  let symbolHash = op.id_hash('symbol');
-  let symbol = op.read_universal('collection', symbolHash);
+    let cid = SASEUL.Enc.cid(keypair.address, SPACE);
 
-  condition = op.ne(symbol, null);
-  err_msg = 'Token symbol does not exist.';
-  method.addExecution(op.condition(condition, err_msg));
+    let transaction = {
+      cid,
+      type: 'symbol',
+    };
 
-  response = op.response(symbol);
-  method.addExecution(response);
-
-  return method;
-}
+    const symbol = await SASEUL.Rpc.request(
+      SASEUL.Rpc.signedRequest(transaction, keypair.private_key)
+    );
+    console.log(symbol);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+})();

@@ -1,58 +1,28 @@
-import { NFTParams } from '../interface/IContract';
+import { initConfigurationReturnKeyPair } from '../utils/initConfig';
 
 const SASEUL = require('saseul');
 
 let op = SASEUL.SmartContract.Operator;
+const SPACE = 'XRC Hans NFT 11';
 
-export function getInfo({ writer, space }: NFTParams) {
-  let condition, err_msg, response;
-  let method = new SASEUL.SmartContract.Method({
-    type: 'request',
-    name: 'GetInfo',
-    version: '1',
-    space: space,
-    writer: writer,
-  });
+(async function () {
+  try {
+    let { keypair } = await initConfigurationReturnKeyPair();
 
-  method.addParameter({
-    name: 'tokenId',
-    type: 'string',
-    maxlength: 16,
-    requirements: true,
-  });
-  method.addParameter({
-    name: 'address',
-    type: 'string',
-    maxlength: SASEUL.Enc.ID_HASH_SIZE,
-    requirements: true,
-  });
+    let cid = SASEUL.Enc.cid(keypair.address, SPACE);
 
-  let tokenId = op.load_param('tokenId');
-  let tokenHash = op.id_hash(tokenId);
+    let transaction = {
+      cid,
+      type: 'GetInfo',
+      tokenId: '1',
+      address: keypair.address,
+    };
 
-  let owner = op.read_universal('owner', tokenHash);
-  let address = op.load_param('address');
-
-  condition = op.ne(owner, null);
-  err_msg = 'owner null.';
-  method.addExecution(op.condition(condition, err_msg));
-
-  condition = op.eq(owner, address);
-  err_msg = 'address you entered is not owned by the owner.';
-  method.addExecution(op.condition(condition, err_msg));
-
-  // return list
-  let inventory = op.read_universal(
-    op.concat(['inventory_', address]),
-    tokenHash
-  );
-
-  response = op.response({
-    tokenId: tokenId,
-    owner: owner,
-    info: inventory,
-  });
-  method.addExecution(response);
-
-  return method;
-}
+    const info = await SASEUL.Rpc.request(
+      SASEUL.Rpc.signedRequest(transaction, keypair.private_key)
+    );
+    console.log(info);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+})();

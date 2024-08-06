@@ -17,7 +17,9 @@
     "./xrc-721/**/*.ts",
     "xrc-721/contract-example.ts",
     "xrc-721/publish-example.ts",
-    "xrc-721/request-example.ts"
+    "xrc-721/request-example.ts",
+    "xrc-721/utils/initConfig.ts",
+    "xphere.ini"
   ],
   "exclude": ["node_modules", "dist"]
 }

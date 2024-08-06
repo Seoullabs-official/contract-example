@@ -1,15 +1,16 @@
 import { Keypair } from '../interface/IKeypair';
 
+import * as path from 'path';
+import * as fs from 'fs';
+import { ConfigIniParser } from 'config-ini-parser';
+
 const SASEUL = require('saseul');
-const path = require('path');
-const fs = require('fs');
-const ConfigIniParser = require('config-ini-parser').ConfigIniParser;
 
 const SPACE = 'XRC Hans NFT 10';
 
 (async function () {
   try {
-    const root = path.dirname(__dirname);
+    let root = path.join(path.dirname(__dirname), '..');
     const configPath = path.join(root, 'xphere.ini');
     const keypairPath = path.join(root, 'keypair.json');
 

@@ -1,41 +1,27 @@
-import { NFTParams } from '../interface/IContract';
+import { initConfigurationReturnKeyPair } from '../utils/initConfig';
 
 const SASEUL = require('saseul');
 
 let op = SASEUL.SmartContract.Operator;
+const SPACE = 'XRC Hans NFT 11';
 
-export function ownerOf({ writer, space }: NFTParams) {
-  let condition, err_msg, response;
-  let method = new SASEUL.SmartContract.Method({
-    type: 'request',
-    name: 'OwnerOf',
-    version: '1',
-    space: space,
-    writer: writer,
-  });
+(async function () {
+  try {
+    let { keypair } = await initConfigurationReturnKeyPair();
 
-  method.addParameter({
-    name: 'tokenId',
-    type: 'string',
-    maxlength: 16,
-    requirements: true,
-  });
+    let cid = SASEUL.Enc.cid(keypair.address, SPACE);
 
-  let tokenId = op.load_param('tokenId');
-  let tokenHash = op.id_hash(tokenId);
-  let owner = op.read_universal('owner', tokenHash);
+    let transaction = {
+      cid,
+      type: 'OwnerOf',
+      tokenId: '1',
+    };
 
-  // owner !== null
-  condition = op.ne(owner, null);
-  err_msg = 'The token does not exist.';
-  method.addExecution(op.condition(condition, err_msg));
-
-  // return owner
-  response = op.response({
-    owner,
-  });
-
-  method.addExecution(response);
-
-  return method;
-}
+    const owner = await SASEUL.Rpc.request(
+      SASEUL.Rpc.signedRequest(transaction, keypair.private_key)
+    );
+    console.log(owner);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+})();

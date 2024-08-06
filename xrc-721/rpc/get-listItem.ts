@@ -1,47 +1,29 @@
-import { NFTParams } from '../interface/IContract';
+import { initConfigurationReturnKeyPair } from '../utils/initConfig';
 
 const SASEUL = require('saseul');
 
 let op = SASEUL.SmartContract.Operator;
+const SPACE = 'XRC Hans NFT 11';
 
-export function listItem({ writer, space }: NFTParams) {
-  let condition, err_msg, response;
-  let method = new SASEUL.SmartContract.Method({
-    type: 'request',
-    name: 'ListItem',
-    version: '1',
-    space: space,
-    writer: writer,
-  });
+(async function () {
+  try {
+    let { keypair } = await initConfigurationReturnKeyPair();
 
-  method.addParameter({
-    name: 'page',
-    type: 'int',
-    maxlength: 5,
-    requirements: true,
-  });
-  method.addParameter({
-    name: 'count',
-    type: 'int',
-    maxlength: 4,
-    requirements: true,
-  });
-  method.addParameter({
-    name: 'address',
-    type: 'string',
-    maxlength: SASEUL.Enc.ID_HASH_SIZE,
-    requirements: true,
-  });
-  let address = op.load_param('address');
-  let page = op.load_param('page');
-  let count = op.load_param('count');
-  let inventory = op.concat(['inventory_', address]);
+    let cid = SASEUL.Enc.cid(keypair.address, SPACE);
 
-  // return list
-  let list = op.list_universal(inventory, page, count);
+    let transaction = {
+      cid,
+      type: 'ListItem',
+      page: 0,
+      count: 3,
+      address: keypair.address,
+    };
 
-  response = op.response(list);
-  method.addExecution(response);
-
-  return method;
-}
+    const listItem = await SASEUL.Rpc.request(
+      SASEUL.Rpc.signedRequest(transaction, keypair.private_key)
+    );
+    console.log(listItem);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+})();

@@ -1,24 +1,26 @@
-import { NFTParams } from '../interface/IContract';
+import { initConfigurationReturnKeyPair } from '../utils/initConfig';
 
 const SASEUL = require('saseul');
 
 let op = SASEUL.SmartContract.Operator;
+const SPACE = 'XRC Hans NFT 11';
 
-export function totalSupply({ writer, space }: NFTParams) {
-  let response;
-  let method = new SASEUL.SmartContract.Method({
-    type: 'request',
-    name: 'totalSupply',
-    version: '1',
-    space: space,
-    writer: writer,
-  });
+(async function () {
+  try {
+    let { keypair } = await initConfigurationReturnKeyPair();
 
-  let totalSupplyHash = op.id_hash('total_supply');
-  let total_supply = op.read_universal('collection', totalSupplyHash, '0');
+    let cid = SASEUL.Enc.cid(keypair.address, SPACE);
 
-  response = op.response({ total_supply });
-  method.addExecution(response);
+    let transaction = {
+      cid,
+      type: 'totalSupply',
+    };
 
-  return method;
-}
+    const total_supply = await SASEUL.Rpc.request(
+      SASEUL.Rpc.signedRequest(transaction, keypair.private_key)
+    );
+    console.log(total_supply);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+})();

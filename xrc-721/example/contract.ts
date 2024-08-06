@@ -1,10 +1,11 @@
-const SASEUL = require('saseul');
 import * as path from 'path';
 import * as fs from 'fs';
 import { ConfigIniParser } from 'config-ini-parser';
 import { Keypair } from '../interface/IKeypair';
 
-const SPACE = 'XRC Hans NFT 10';
+const SASEUL = require('saseul');
+
+const SPACE = 'XRC Hans NFT 11';
 
 const fileReaderReturnBase64Encoded = async (
   imagePath: string
@@ -63,7 +64,7 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
 
 (async (): Promise<void> => {
   try {
-    const root = path.dirname(__dirname);
+    let root = path.join(path.dirname(__dirname), '..');
     const configPath = path.join(root, 'xphere.ini');
     const keypairPath = path.join(root, 'keypair.json');
     const imagePath = path.join(__dirname, 'images', '1.jpeg');
@@ -83,14 +84,14 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
       encoding: 'utf-8',
     });
     const keypair: Keypair = JSON.parse(keypairContent);
-
-    const nftExampleFileBase64 = await fileReaderReturnBase64Encoded(imagePath);
     const cid = SASEUL.Enc.cid(keypair.address, SPACE);
 
-    // let issue = await issueContract(
-    //   { address: keypair.address, private_key: keypair.private_key },
-    //   cid
-    // );
+    const nftExampleFileBase64 = await fileReaderReturnBase64Encoded(imagePath);
+
+    let issue = await issueContract(
+      { address: keypair.address, private_key: keypair.private_key },
+      cid
+    );
     let mint = await mintContract(
       { address: keypair.address, private_key: keypair.private_key },
       cid,
@@ -99,7 +100,7 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
     // const transferResult = await transfer(keypair, cid);
 
     // console.log(transferResult, ':: transfer');
-    // console.log(issue, ':: issue');
+    console.log(issue, ':: issue');
     console.log(mint, ':: mint');
   } catch (error) {
     console.error('Error:', error);

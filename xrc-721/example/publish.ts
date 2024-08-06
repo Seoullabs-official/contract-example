@@ -1,14 +1,15 @@
 import nft from '../smart-contract/xrc721';
 
+import * as path from 'path';
+import * as fs from 'fs';
+import { ConfigIniParser } from 'config-ini-parser';
+
 const SASEUL = require('saseul');
-const path = require('path');
-const fs = require('fs');
-const ConfigIniParser = require('config-ini-parser').ConfigIniParser;
 
 (async function () {
-  const space = 'XRC Hans NFT 10';
+  const space = 'XRC Hans NFT 11';
 
-  let root = path.dirname(__dirname);
+  let root = path.join(path.dirname(__dirname), '..');
   let _input = await fs.promises.readFile(root + '/xphere.ini', {
     encoding: 'utf-8',
   });
