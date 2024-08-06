@@ -1,0 +1,27 @@
+{
+  "name": "xrc",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "transfer": "node dist/transfer.js",
+    "transfer:dev": "ts-node-dev transfer.ts",
+    "main": "node dist/main.js",
+    "main:dev": "ts-node-dev main.ts",
+    "xphere": "node dist/xphereTest.js",
+    "xphere:dev": "ts-node-dev xphereTest.ts",
+    "nft": "node dist/nft.js",
+    "nft:dev": "ts-node-dev nft.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "config-ini-parser": "^1.6.1",
+    "path": "^0.12.7",
+    "prompt-sync": "^4.2.0",
+    "saseul": "^2.8.0",
+    "tweetnacl": "^1.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.4",
+    "zigap-utils": "^0.0.30"
+  }
+}

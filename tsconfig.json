@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES6",
+    "moduleResolution": "node",
+    "rootDir": "./xrc-721",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "./xrc-721/**/*.ts",
+    "xrc-721/contract-example.ts",
+    "xrc-721/publish-example.ts",
+    "xrc-721/request-example.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
+}
