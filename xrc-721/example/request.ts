@@ -53,7 +53,7 @@ async function fetchXrcInfo(cid: string, keypair: Keypair) {
     { type: 'name' },
     { type: 'OwnerOf', tokenId: '1' },
     { type: 'symbol' },
-    { type: 'ListItem', page: 0, count: 3, address },
+    { type: 'ListTokenOf', page: 0, count: 3, address },
     { type: 'totalSupply' },
     { type: 'BalanceOf', address },
   ];

@@ -176,7 +176,7 @@ function listItem({ writer, space }: NFTParams) {
   let condition, err_msg, response;
   let method = new SASEUL.SmartContract.Method({
     type: 'request',
-    name: 'ListItem',
+    name: 'ListTokenOf',
     version: '1',
     space: space,
     writer: writer,

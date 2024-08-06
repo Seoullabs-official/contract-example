@@ -13,7 +13,7 @@ const SPACE = 'XRC Hans NFT 11';
 
     let transaction = {
       cid,
-      type: 'ListItem',
+      type: 'ListTokenOf',
       page: 0,
       count: 3,
       address: keypair.address,
