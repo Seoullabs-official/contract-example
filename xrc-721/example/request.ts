@@ -32,13 +32,18 @@ const SPACE = 'XRC Hans NFT 10';
 
     const xrc = await fetchXrcInfo(cid, keypair);
 
-    console.log('info :: ', xrc.info);
     console.log('name :: ', xrc.name);
-    console.log('owner :: ', xrc.owner);
     console.log('symbol :: ', xrc.symbol);
     console.log('totalSupply :: ', xrc.totalSupply);
     console.log('balance :: ', xrc.balance);
     console.log('listItems :: ', xrc.listItems);
+
+    let ownerToken = await getOwnerToken(cid, keypair);
+
+    let ownerInfo = await getOwnerInfo(cid, keypair, ownerToken);
+
+    console.log('onwer :: ', ownerToken);
+    console.log('ownerInfo :: ', ownerInfo);
   } catch (error) {
     console.error('Error: ', error);
   }
@@ -49,9 +54,7 @@ async function fetchXrcInfo(cid: string, keypair: Keypair) {
   const address = keypair.address;
 
   const requestParams = [
-    { type: 'GetInfo', tokenId: '1', address },
     { type: 'name' },
-    { type: 'OwnerOf', tokenId: '1' },
     { type: 'symbol' },
     { type: 'ListTokenOf', page: 0, count: 3, address },
     { type: 'totalSupply' },
@@ -62,8 +65,28 @@ async function fetchXrcInfo(cid: string, keypair: Keypair) {
     SASEUL.Rpc.request(SASEUL.Rpc.signedRequest({ cid, ...params }, privateKey))
   );
 
-  const [info, name, owner, symbol, listItems, totalSupply, balance] =
-    await Promise.all(requests);
+  const [name, symbol, listItems, totalSupply, balance] = await Promise.all(
+    requests
+  );
 
-  return { info, name, owner, symbol, listItems, totalSupply, balance };
+  return { name, symbol, listItems, totalSupply, balance };
+}
+
+async function getOwnerToken(cid: string, keypair: Keypair) {
+  const privateKey = keypair.private_key;
+  const request = await SASEUL.Rpc.request(
+    SASEUL.Rpc.signedRequest({ cid, type: 'OwnerOf', tokenId: '1' }, privateKey)
+  );
+  return request.data.owner;
+}
+
+async function getOwnerInfo(cid: string, keypair: Keypair, owner: string) {
+  const privateKey = keypair.private_key;
+  const request = await SASEUL.Rpc.request(
+    SASEUL.Rpc.signedRequest(
+      { cid, type: 'GetInfo', tokenId: '1', address: owner },
+      privateKey
+    )
+  );
+  return request.data;
 }

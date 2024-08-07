@@ -65,8 +65,8 @@ function mint({ writer, space }: NFTParams) {
 
   method.addParameter({
     name: 'tokenId',
-    type: 'string',
-    maxlength: 16,
+    type: 'int',
+    maxlength: 11,
     requirements: true,
   });
   method.addParameter({
@@ -87,12 +87,17 @@ function mint({ writer, space }: NFTParams) {
     maxlength: 1048576,
     requirements: true,
   });
-
+  method.addParameter({
+    name: 'attribute',
+    type: 'any',
+    requirements: false,
+  });
   let from = op.load_param('from');
   let tokenId = op.load_param('tokenId');
   let name = op.load_param('name');
   let description = op.load_param('description');
   let image = op.load_param('image');
+  let attribute = op.load_param('attribute');
 
   let tokenHash = op.id_hash(tokenId);
 
@@ -133,9 +138,44 @@ function mint({ writer, space }: NFTParams) {
   });
   method.addExecution(update);
 
+  update = op.write_universal('metadata', tokenHash, attribute);
+  method.addExecution(update);
+
   return method;
 }
 
+function tokenURI({ writer, space }: NFTParams) {
+  let condition, err_msg, update, response;
+  let method = new SASEUL.SmartContract.Method({
+    type: 'request',
+    name: 'TokenURI',
+    version: '1',
+    space: space,
+    writer: writer,
+  });
+
+  method.addParameter({
+    name: 'tokenId',
+    type: 'int',
+    maxlength: 11,
+    requirements: true,
+  });
+  let tokenId = op.load_param('tokenId');
+  let tokenHash = op.id_hash(tokenId);
+  let metadata = op.read_universal('metadata', tokenHash, null);
+
+  condition = op.eq(metadata, null);
+  err_msg = 'The tokenURI for this tokenId does not exist.';
+  method.addExecution(op.condition(condition, err_msg));
+
+  response = op.response({
+    metadata,
+  });
+
+  method.addExecution(response);
+
+  return method;
+}
 function ownerOf({ writer, space }: NFTParams) {
   let condition, err_msg, response;
   let method = new SASEUL.SmartContract.Method({
@@ -148,8 +188,8 @@ function ownerOf({ writer, space }: NFTParams) {
 
   method.addParameter({
     name: 'tokenId',
-    type: 'string',
-    maxlength: 16,
+    type: 'int',
+    maxlength: 11,
     requirements: true,
   });
 
@@ -253,8 +293,8 @@ function getInfo({ writer, space }: NFTParams) {
 
   method.addParameter({
     name: 'tokenId',
-    type: 'string',
-    maxlength: 16,
+    type: 'int',
+    maxlength: 11,
     requirements: true,
   });
   method.addParameter({
@@ -312,8 +352,8 @@ function transfer({ writer, space }: NFTParams) {
   });
   method.addParameter({
     name: 'tokenId',
-    type: 'string',
-    maxlength: 16,
+    type: 'int',
+    maxlength: 11,
     requirements: true,
   });
 
@@ -453,4 +493,5 @@ export = {
   balanceOf,
   listItem,
   ownerOf,
+  tokenURI,
 };
