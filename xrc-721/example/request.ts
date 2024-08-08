@@ -6,7 +6,7 @@ import { ConfigIniParser } from 'config-ini-parser';
 
 const SASEUL = require('saseul');
 
-const SPACE = 'XRC Hans NFT 10';
+const SPACE = 'TPHERE XRC NFT 1';
 
 (async function () {
   try {
@@ -37,6 +37,7 @@ const SPACE = 'XRC Hans NFT 10';
     console.log('totalSupply :: ', xrc.totalSupply);
     console.log('balance :: ', xrc.balance);
     console.log('listItems :: ', xrc.listItems);
+    console.log('tokenURI :: ', xrc.tokenURI);
 
     let ownerToken = await getOwnerToken(cid, keypair);
 
@@ -59,23 +60,23 @@ async function fetchXrcInfo(cid: string, keypair: Keypair) {
     { type: 'ListTokenOf', page: 0, count: 3, address },
     { type: 'totalSupply' },
     { type: 'BalanceOf', address },
+    { type: 'TokenURI', tokenId: 1 },
   ];
 
   const requests = requestParams.map((params) =>
     SASEUL.Rpc.request(SASEUL.Rpc.signedRequest({ cid, ...params }, privateKey))
   );
 
-  const [name, symbol, listItems, totalSupply, balance] = await Promise.all(
-    requests
-  );
+  const [name, symbol, listItems, totalSupply, balance, tokenURI] =
+    await Promise.all(requests);
 
-  return { name, symbol, listItems, totalSupply, balance };
+  return { name, symbol, listItems, totalSupply, balance, tokenURI };
 }
 
 async function getOwnerToken(cid: string, keypair: Keypair) {
   const privateKey = keypair.private_key;
   const request = await SASEUL.Rpc.request(
-    SASEUL.Rpc.signedRequest({ cid, type: 'OwnerOf', tokenId: '1' }, privateKey)
+    SASEUL.Rpc.signedRequest({ cid, type: 'OwnerOf', tokenId: 1 }, privateKey)
   );
   return request.data.owner;
 }
@@ -84,7 +85,7 @@ async function getOwnerInfo(cid: string, keypair: Keypair, owner: string) {
   const privateKey = keypair.private_key;
   const request = await SASEUL.Rpc.request(
     SASEUL.Rpc.signedRequest(
-      { cid, type: 'GetInfo', tokenId: '1', address: owner },
+      { cid, type: 'GetInfo', tokenId: 1, address: owner },
       privateKey
     )
   );

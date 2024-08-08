@@ -5,7 +5,7 @@ import { Keypair } from '../interface/IKeypair';
 
 const SASEUL = require('saseul');
 
-const SPACE = 'XRC Hans NFT 11';
+const SPACE = 'TPHERE XRC NFT 1';
 
 const fileReaderReturnBase64Encoded = async (
   imagePath: string
@@ -23,7 +23,7 @@ const transfer = async (keypair: Keypair, cid: string): Promise<any> => {
     type: 'Transfer',
     cid,
     from: keypair.address,
-    tokenId: '1',
+    tokenId: 1,
     to: 'b44760c985e486f6adc6fa3419b092c44eb207b1ba7a',
   };
   return SASEUL.Rpc.broadcastTransaction(
@@ -39,9 +39,9 @@ const mintContract = async (
   const transaction = {
     cid,
     type: 'Mint',
-    name: 'mint 8/6 - 4',
-    description: '00 desc 8/6 - 4',
-    tokenId: '1',
+    name: 'TPHERE ',
+    description: 'description ',
+    tokenId: 1,
     image: base64data,
   };
   return SASEUL.Rpc.broadcastTransaction(
@@ -53,8 +53,8 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
   const transaction = {
     cid,
     type: 'Issue',
-    name: 'issue01 -4',
-    symbol: 'issue01 -4',
+    name: 'collection name',
+    symbol: 'collection symbol',
     from: keypair.address,
   };
   return SASEUL.Rpc.broadcastTransaction(
@@ -67,7 +67,7 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
     let root = path.join(path.dirname(__dirname), '..');
     const configPath = path.join(root, 'xphere.ini');
     const keypairPath = path.join(root, 'keypair.json');
-    const imagePath = path.join(__dirname, 'images', '1.jpeg');
+    const imagePath = path.join(__dirname, '../images', '1.jpeg');
 
     const parser = new ConfigIniParser();
     const configContent = await fs.promises.readFile(configPath, {

@@ -3,7 +3,7 @@ import { initConfigurationReturnKeyPair } from '../utils/initConfig';
 const SASEUL = require('saseul');
 
 let op = SASEUL.SmartContract.Operator;
-const SPACE = 'XRC Hans NFT 11';
+const SPACE = '';
 
 (async function () {
   try {
@@ -13,7 +13,7 @@ const SPACE = 'XRC Hans NFT 11';
 
     let transaction = {
       cid,
-      type: 'OwnerOf',
+      type: 'TokenURI',
       tokenId: 1,
     };
 

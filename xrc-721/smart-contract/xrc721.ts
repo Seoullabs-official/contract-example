@@ -160,6 +160,7 @@ function tokenURI({ writer, space }: NFTParams) {
     maxlength: 11,
     requirements: true,
   });
+
   let tokenId = op.load_param('tokenId');
   let tokenHash = op.id_hash(tokenId);
   let metadata = op.read_universal('metadata', tokenHash, null);
