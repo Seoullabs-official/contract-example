@@ -2,7 +2,6 @@ import { initConfigurationReturnKeyPair } from '../utils/initConfig';
 
 const SASEUL = require('saseul');
 
-let op = SASEUL.SmartContract.Operator;
 const SPACE = '';
 
 (async function () {
