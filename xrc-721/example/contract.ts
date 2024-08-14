@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import { ConfigIniParser } from 'config-ini-parser';
-import { Keypair } from '../interface/IKeypair';
+import { Keypair } from '../types/keypairType';
 
 const SASEUL = require('saseul');
 

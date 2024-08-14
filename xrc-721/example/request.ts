@@ -1,4 +1,4 @@
-import { Keypair } from '../interface/IKeypair';
+import { Keypair } from '../types/keypairType';
 
 import * as path from 'path';
 import * as fs from 'fs';

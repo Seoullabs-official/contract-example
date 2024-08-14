@@ -1,11 +1,13 @@
 const SASEUL = require('saseul');
 
-import { NFTParams } from '../interface/IContract';
+import { NFTParams } from '../types/contractType';
 
 let op = SASEUL.SmartContract.Operator;
 
-function issue({ writer, space }: NFTParams) {
+export function issue(data: NFTParams) {
+  const { writer, space } = data;
   let condition, err_msg, update;
+
   let method = new SASEUL.SmartContract.Method({
     type: 'contract',
     name: 'Issue',
@@ -53,8 +55,10 @@ function issue({ writer, space }: NFTParams) {
   return method;
 }
 
-function mint({ writer, space }: NFTParams) {
+export function mint(data: NFTParams) {
+  const { writer, space } = data;
   let condition, err_msg, update;
+
   let method = new SASEUL.SmartContract.Method({
     type: 'contract',
     name: 'Mint',
@@ -144,8 +148,10 @@ function mint({ writer, space }: NFTParams) {
   return method;
 }
 
-function tokenURI({ writer, space }: NFTParams) {
-  let condition, err_msg, update, response;
+export function tokenURI(data: NFTParams) {
+  const { writer, space } = data;
+  let condition, err_msg, response;
+
   let method = new SASEUL.SmartContract.Method({
     type: 'request',
     name: 'TokenURI',
@@ -177,8 +183,10 @@ function tokenURI({ writer, space }: NFTParams) {
 
   return method;
 }
-function ownerOf({ writer, space }: NFTParams) {
+export function ownerOf(data: NFTParams) {
+  const { writer, space } = data;
   let condition, err_msg, response;
+
   let method = new SASEUL.SmartContract.Method({
     type: 'request',
     name: 'OwnerOf',
@@ -213,8 +221,10 @@ function ownerOf({ writer, space }: NFTParams) {
   return method;
 }
 
-function listItem({ writer, space }: NFTParams) {
+export function listItem(data: NFTParams) {
+  const { writer, space } = data;
   let condition, err_msg, response;
+
   let method = new SASEUL.SmartContract.Method({
     type: 'request',
     name: 'ListTokenOf',
@@ -255,8 +265,10 @@ function listItem({ writer, space }: NFTParams) {
   return method;
 }
 
-function balanceOf({ writer, space }: NFTParams) {
+export function balanceOf(data: NFTParams) {
+  const { writer, space } = data;
   let response;
+
   let method = new SASEUL.SmartContract.Method({
     type: 'request',
     name: 'BalanceOf',
@@ -282,8 +294,10 @@ function balanceOf({ writer, space }: NFTParams) {
   return method;
 }
 
-function getInfo({ writer, space }: NFTParams) {
+export function getInfo(data: NFTParams) {
+  const { writer, space } = data;
   let condition, err_msg, response;
+
   let method = new SASEUL.SmartContract.Method({
     type: 'request',
     name: 'GetInfo',
@@ -335,8 +349,10 @@ function getInfo({ writer, space }: NFTParams) {
   return method;
 }
 
-function transfer({ writer, space }: NFTParams) {
+export function transfer(data: NFTParams) {
+  const { writer, space } = data;
   let condition, err_msg, update;
+
   let method = new SASEUL.SmartContract.Method({
     type: 'contract',
     name: 'Transfer', // transfer
@@ -418,8 +434,10 @@ function transfer({ writer, space }: NFTParams) {
   return method;
 }
 
-function totalSupply({ writer, space }: NFTParams) {
+export function totalSupply(data: NFTParams) {
+  const { writer, space } = data;
   let response;
+
   let method = new SASEUL.SmartContract.Method({
     type: 'request',
     name: 'totalSupply',
@@ -437,8 +455,10 @@ function totalSupply({ writer, space }: NFTParams) {
   return method;
 }
 
-function name({ writer, space }: NFTParams) {
+export function name(data: NFTParams) {
+  const { writer, space } = data;
   let condition, err_msg, response;
+
   let method = new SASEUL.SmartContract.Method({
     type: 'request',
     name: 'name',
@@ -460,8 +480,10 @@ function name({ writer, space }: NFTParams) {
   return method;
 }
 
-function symbol({ writer, space }: NFTParams) {
+export function symbol(data: NFTParams) {
+  const { writer, space } = data;
   let condition, err_msg, response;
+
   let method = new SASEUL.SmartContract.Method({
     type: 'request',
     name: 'symbol',
@@ -482,17 +504,3 @@ function symbol({ writer, space }: NFTParams) {
 
   return method;
 }
-
-export = {
-  issue,
-  mint,
-  transfer,
-  name,
-  symbol,
-  totalSupply,
-  getInfo,
-  balanceOf,
-  listItem,
-  ownerOf,
-  tokenURI,
-};
