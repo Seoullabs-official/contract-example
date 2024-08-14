@@ -1,4 +1,16 @@
-import nft from '../smart-contract/xrc721';
+import {
+  issue,
+  mint,
+  transfer,
+  name,
+  symbol,
+  totalSupply,
+  getInfo,
+  balanceOf,
+  listItem,
+  ownerOf,
+  tokenURI,
+} from '../smart-contract/xrc721';
 
 import * as path from 'path';
 import * as fs from 'fs';
@@ -29,33 +41,31 @@ import XPHERE from 'xphere';
   let contract = new XPHERE.SmartContract.Contract(keypair.address, space);
 
   // await contract.addMethod(
-  //   nft.issue({ writer: keypair.address, space: space })
+  //   issue({ writer: keypair.address, space: space })
   // );
-  // await contract.addMethod(nft.mint({ writer: keypair.address, space: space }));
+  // await contract.addMethod(mint({ writer: keypair.address, space: space }));
   // await contract.addMethod(
-  //   nft.getInfo({ writer: keypair.address, space: space })
+  //   getInfo({ writer: keypair.address, space: space })
   // );
-  // await contract.addMethod(nft.name({ writer: keypair.address, space: space }));
+  // await contract.addMethod(name({ writer: keypair.address, space: space }));
   // await contract.addMethod(
-  //   nft.symbol({ writer: keypair.address, space: space })
-  // );
-  // await contract.addMethod(
-  //   nft.transfer({ writer: keypair.address, space: space })
+  //   symbol({ writer: keypair.address, space: space })
   // );
   // await contract.addMethod(
-  //   nft.totalSupply({ writer: keypair.address, space: space })
+  //   transfer({ writer: keypair.address, space: space })
   // );
   // await contract.addMethod(
-  //   nft.listItem({ writer: keypair.address, space: space })
+  //   totalSupply({ writer: keypair.address, space: space })
   // );
   // await contract.addMethod(
-  //   nft.ownerOf({ writer: keypair.address, space: space })
+  //   listItem({ writer: keypair.address, space: space })
   // );
   // await contract.addMethod(
-  //   nft.balanceOf({ writer: keypair.address, space: space })
+  //   ownerOf({ writer: keypair.address, space: space })
   // );
-  await contract.addMethod(
-    nft.tokenURI({ writer: keypair.address, space: space })
-  );
+  // await contract.addMethod(
+  //   balanceOf({ writer: keypair.address, space: space })
+  // );
+  await contract.addMethod(tokenURI({ writer: keypair.address, space: space }));
   await contract.publish(keypair.private_key);
 })();

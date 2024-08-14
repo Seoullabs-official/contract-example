@@ -4,7 +4,7 @@ import { NFTParams } from '../types/contractType';
 
 const op = XPHERE.SmartContract.Operator;
 
-function issue(data: NFTParams) {
+export function issue(data: NFTParams) {
   const { writer, space } = data;
   let update;
 
@@ -55,7 +55,7 @@ function issue(data: NFTParams) {
   return method;
 }
 
-function mint(data: NFTParams) {
+export function mint(data: NFTParams) {
   const { writer, space } = data;
   let update;
 
@@ -149,7 +149,7 @@ function mint(data: NFTParams) {
   return method;
 }
 
-function tokenURI(data: NFTParams) {
+export function tokenURI(data: NFTParams) {
   const { writer, space } = data;
 
   const method = new XPHERE.SmartContract.Method({
@@ -184,7 +184,7 @@ function tokenURI(data: NFTParams) {
   return method;
 }
 
-function ownerOf(data: NFTParams) {
+export function ownerOf(data: NFTParams) {
   const { writer, space } = data;
 
   const method = new XPHERE.SmartContract.Method({
@@ -221,7 +221,7 @@ function ownerOf(data: NFTParams) {
   return method;
 }
 
-function listItem(data: NFTParams) {
+export function listItem(data: NFTParams) {
   const { writer, space } = data;
 
   const method = new XPHERE.SmartContract.Method({
@@ -265,7 +265,7 @@ function listItem(data: NFTParams) {
   return method;
 }
 
-function balanceOf(data: NFTParams) {
+export function balanceOf(data: NFTParams) {
   const { writer, space } = data;
 
   const method = new XPHERE.SmartContract.Method({
@@ -293,7 +293,7 @@ function balanceOf(data: NFTParams) {
   return method;
 }
 
-function getInfo(data: NFTParams) {
+export function getInfo(data: NFTParams) {
   const { writer, space } = data;
   let condition, errMsg;
 
@@ -348,7 +348,7 @@ function getInfo(data: NFTParams) {
   return method;
 }
 
-function transfer(data: NFTParams) {
+export function transfer(data: NFTParams) {
   const { writer, space } = data;
   let condition, errMsg, update;
 
@@ -433,7 +433,7 @@ function transfer(data: NFTParams) {
   return method;
 }
 
-function totalSupply(data: NFTParams) {
+export function totalSupply(data: NFTParams) {
   const { writer, space } = data;
 
   const method = new XPHERE.SmartContract.Method({
@@ -453,7 +453,7 @@ function totalSupply(data: NFTParams) {
   return method;
 }
 
-function name(data: NFTParams) {
+export function name(data: NFTParams) {
   const { writer, space } = data;
 
   const method = new XPHERE.SmartContract.Method({
@@ -477,7 +477,7 @@ function name(data: NFTParams) {
   return method;
 }
 
-function symbol(data: NFTParams) {
+export function symbol(data: NFTParams) {
   const { writer, space } = data;
 
   const method = new XPHERE.SmartContract.Method({
@@ -500,17 +500,3 @@ function symbol(data: NFTParams) {
 
   return method;
 }
-
-export = {
-  issue,
-  mint,
-  transfer,
-  name,
-  symbol,
-  totalSupply,
-  getInfo,
-  balanceOf,
-  listItem,
-  ownerOf,
-  tokenURI,
-};
