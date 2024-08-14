@@ -6,7 +6,9 @@ let op = SASEUL.SmartContract.Operator;
 
 export function issue(data: NFTParams) {
   const { writer, space } = data;
-  let condition, err_msg, update;
+  let condition: boolean;
+  let err_msg: string;
+  let update: any;
 
   let method = new SASEUL.SmartContract.Method({
     type: 'contract',
@@ -57,7 +59,9 @@ export function issue(data: NFTParams) {
 
 export function mint(data: NFTParams) {
   const { writer, space } = data;
-  let condition, err_msg, update;
+  let condition: boolean;
+  let err_msg: string;
+  let update: any;
 
   let method = new SASEUL.SmartContract.Method({
     type: 'contract',
@@ -150,7 +154,9 @@ export function mint(data: NFTParams) {
 
 export function tokenURI(data: NFTParams) {
   const { writer, space } = data;
-  let condition, err_msg, response;
+  let condition: boolean;
+  let err_msg: string;
+  let response: any;
 
   let method = new SASEUL.SmartContract.Method({
     type: 'request',
@@ -185,7 +191,9 @@ export function tokenURI(data: NFTParams) {
 }
 export function ownerOf(data: NFTParams) {
   const { writer, space } = data;
-  let condition, err_msg, response;
+  let condition: boolean;
+  let err_msg: string;
+  let response: any;
 
   let method = new SASEUL.SmartContract.Method({
     type: 'request',
@@ -223,7 +231,7 @@ export function ownerOf(data: NFTParams) {
 
 export function listItem(data: NFTParams) {
   const { writer, space } = data;
-  let condition, err_msg, response;
+  let response: any;
 
   let method = new SASEUL.SmartContract.Method({
     type: 'request',
@@ -267,7 +275,7 @@ export function listItem(data: NFTParams) {
 
 export function balanceOf(data: NFTParams) {
   const { writer, space } = data;
-  let response;
+  let response: any;
 
   let method = new SASEUL.SmartContract.Method({
     type: 'request',
@@ -296,7 +304,9 @@ export function balanceOf(data: NFTParams) {
 
 export function getInfo(data: NFTParams) {
   const { writer, space } = data;
-  let condition, err_msg, response;
+  let condition: boolean;
+  let err_msg: string;
+  let response: any;
 
   let method = new SASEUL.SmartContract.Method({
     type: 'request',
@@ -351,7 +361,9 @@ export function getInfo(data: NFTParams) {
 
 export function transfer(data: NFTParams) {
   const { writer, space } = data;
-  let condition, err_msg, update;
+  let condition: boolean;
+  let err_msg: string;
+  let update: any;
 
   let method = new SASEUL.SmartContract.Method({
     type: 'contract',
@@ -436,7 +448,7 @@ export function transfer(data: NFTParams) {
 
 export function totalSupply(data: NFTParams) {
   const { writer, space } = data;
-  let response;
+  let response: any;
 
   let method = new SASEUL.SmartContract.Method({
     type: 'request',
@@ -457,7 +469,9 @@ export function totalSupply(data: NFTParams) {
 
 export function name(data: NFTParams) {
   const { writer, space } = data;
-  let condition, err_msg, response;
+  let condition: boolean;
+  let err_msg: string;
+  let response: any;
 
   let method = new SASEUL.SmartContract.Method({
     type: 'request',
@@ -482,7 +496,9 @@ export function name(data: NFTParams) {
 
 export function symbol(data: NFTParams) {
   const { writer, space } = data;
-  let condition, err_msg, response;
+  let condition: boolean;
+  let err_msg: string;
+  let response: any;
 
   let method = new SASEUL.SmartContract.Method({
     type: 'request',
