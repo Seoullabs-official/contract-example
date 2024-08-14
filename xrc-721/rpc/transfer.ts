@@ -1,6 +1,6 @@
 import { initConfigurationReturnKeyPair } from '../utils/initConfig';
 
-const SASEUL = require('saseul');
+import XPHERE from 'xphere';
 
 const SPACE = 'XRC Hans NFT 11';
 
@@ -8,7 +8,7 @@ const SPACE = 'XRC Hans NFT 11';
   try {
     let { keypair } = await initConfigurationReturnKeyPair();
 
-    let cid = SASEUL.Enc.cid(keypair.address, SPACE);
+    let cid = XPHERE.Enc.cid(keypair.address, SPACE);
 
     let transaction = {
       type: 'Transfer',
@@ -18,8 +18,8 @@ const SPACE = 'XRC Hans NFT 11';
       to: 'b44760c985e486f6adc6fa3419b092c44eb207b1ba7a',
     };
 
-    let result = await SASEUL.Rpc.broadcastTransaction(
-      SASEUL.Rpc.signedTransaction(transaction, keypair.private_key)
+    let result = await XPHERE.Rpc.broadcastTransaction(
+      XPHERE.Rpc.signedTransaction(transaction, keypair.private_key)
     );
     console.log('issue ::  ' + result);
   } catch (error) {

@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { ConfigIniParser } from 'config-ini-parser';
 
-const SASEUL = require('saseul');
+import XPHERE from 'xphere';
 
 const SPACE = 'TPHERE XRC NFT 1';
 
@@ -21,14 +21,14 @@ const SPACE = 'TPHERE XRC NFT 1';
     parser.parse(configContent);
 
     const peer = parser.get('Network', 'peers[]').replace(/^"(.*)"$/, '$1');
-    SASEUL.Rpc.endpoint(peer);
+    XPHERE.Rpc.endpoint(peer);
 
     const keypairContent = await fs.promises.readFile(keypairPath, {
       encoding: 'utf-8',
     });
     const keypair = JSON.parse(keypairContent);
 
-    const cid = SASEUL.Enc.cid(keypair.address, SPACE);
+    const cid = XPHERE.Enc.cid(keypair.address, SPACE);
 
     const xrc = await fetchXrcInfo(cid, keypair);
 
@@ -64,7 +64,7 @@ async function fetchXrcInfo(cid: string, keypair: Keypair) {
   ];
 
   const requests = requestParams.map((params) =>
-    SASEUL.Rpc.request(SASEUL.Rpc.signedRequest({ cid, ...params }, privateKey))
+    XPHERE.Rpc.request(XPHERE.Rpc.signedRequest({ cid, ...params }, privateKey))
   );
 
   const [name, symbol, listItems, totalSupply, balance, tokenURI] =
@@ -75,16 +75,16 @@ async function fetchXrcInfo(cid: string, keypair: Keypair) {
 
 async function getOwnerToken(cid: string, keypair: Keypair) {
   const privateKey = keypair.private_key;
-  const request = await SASEUL.Rpc.request(
-    SASEUL.Rpc.signedRequest({ cid, type: 'OwnerOf', tokenId: 1 }, privateKey)
+  const request = await XPHERE.Rpc.request(
+    XPHERE.Rpc.signedRequest({ cid, type: 'OwnerOf', tokenId: 1 }, privateKey)
   );
   return request.data.owner;
 }
 
 async function getOwnerInfo(cid: string, keypair: Keypair, owner: string) {
   const privateKey = keypair.private_key;
-  const request = await SASEUL.Rpc.request(
-    SASEUL.Rpc.signedRequest(
+  const request = await XPHERE.Rpc.request(
+    XPHERE.Rpc.signedRequest(
       { cid, type: 'GetInfo', tokenId: 1, address: owner },
       privateKey
     )

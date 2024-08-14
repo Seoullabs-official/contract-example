@@ -2,8 +2,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { ConfigIniParser } from 'config-ini-parser';
 import { Keypair } from '../types/keypairType';
-
-const SASEUL = require('saseul');
+import XPHERE from 'xphere';
 
 const SPACE = 'TPHERE XRC NFT 1';
 
@@ -26,8 +25,8 @@ const transfer = async (keypair: Keypair, cid: string): Promise<any> => {
     tokenId: 1,
     to: 'b44760c985e486f6adc6fa3419b092c44eb207b1ba7a',
   };
-  return SASEUL.Rpc.broadcastTransaction(
-    SASEUL.Rpc.signedTransaction(transaction, keypair.private_key)
+  return XPHERE.Rpc.broadcastTransaction(
+    XPHERE.Rpc.signedTransaction(transaction, keypair.private_key)
   );
 };
 
@@ -44,8 +43,8 @@ const mintContract = async (
     tokenId: 1,
     image: base64data,
   };
-  return SASEUL.Rpc.broadcastTransaction(
-    SASEUL.Rpc.signedTransaction(transaction, keypair.private_key)
+  return XPHERE.Rpc.broadcastTransaction(
+    XPHERE.Rpc.signedTransaction(transaction, keypair.private_key)
   );
 };
 
@@ -57,8 +56,8 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
     symbol: 'collection symbol',
     from: keypair.address,
   };
-  return SASEUL.Rpc.broadcastTransaction(
-    SASEUL.Rpc.signedTransaction(transaction, keypair.private_key)
+  return XPHERE.Rpc.broadcastTransaction(
+    XPHERE.Rpc.signedTransaction(transaction, keypair.private_key)
   );
 };
 
@@ -75,16 +74,16 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
     });
     parser.parse(configContent);
 
-    // Set the SASEUL RPC endpoint
+    // Set the XPHERE RPC endpoint
     const peer = parser.get('Network', 'peers[]').replace(/^"(.*)"$/, '$1');
-    SASEUL.Rpc.endpoint(peer);
+    XPHERE.Rpc.endpoint(peer);
 
     // Read the keypair file
     const keypairContent = await fs.promises.readFile(keypairPath, {
       encoding: 'utf-8',
     });
     const keypair: Keypair = JSON.parse(keypairContent);
-    const cid = SASEUL.Enc.cid(keypair.address, SPACE);
+    const cid = XPHERE.Enc.cid(keypair.address, SPACE);
 
     const nftExampleFileBase64 = await fileReaderReturnBase64Encoded(imagePath);
 

@@ -2,7 +2,7 @@ import { initConfigurationReturnKeyPair } from '../utils/initConfig';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const SASEUL = require('saseul');
+import XPHERE from 'xphere';
 
 const SPACE = 'XRC Hans NFT 11';
 
@@ -21,7 +21,7 @@ const fileReaderReturnBase64Encoded = async (
   try {
     let { keypair } = await initConfigurationReturnKeyPair();
 
-    let cid = SASEUL.Enc.cid(keypair.address, SPACE);
+    let cid = XPHERE.Enc.cid(keypair.address, SPACE);
     const imagePath = path.join(__dirname, '../images', '1.jpeg');
 
     const nftExampleFileBase64 = await fileReaderReturnBase64Encoded(imagePath);
@@ -35,8 +35,8 @@ const fileReaderReturnBase64Encoded = async (
       image: nftExampleFileBase64,
     };
 
-    let result = await SASEUL.Rpc.broadcastTransaction(
-      SASEUL.Rpc.signedTransaction(transaction, keypair.private_key)
+    let result = await XPHERE.Rpc.broadcastTransaction(
+      XPHERE.Rpc.signedTransaction(transaction, keypair.private_key)
     );
     console.log('Mint ::  ' + result);
   } catch (error) {

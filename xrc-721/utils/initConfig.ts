@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import { ConfigIniParser } from 'config-ini-parser';
-const SASEUL = require('saseul');
+import XPHERE from 'xphere';
 
 interface Keypair {
   address: string;
@@ -24,7 +24,7 @@ export async function initConfigurationReturnKeyPair(): Promise<{
 
   let peer = parser.get('Network', 'peers[]').replace(/^"(.*)"$/, '$1');
 
-  SASEUL.Rpc.endpoint(peer);
+  XPHERE.Rpc.endpoint(peer);
 
   let json = await fs.promises.readFile(path.join(root, 'keypair.json'), {
     encoding: 'utf-8',

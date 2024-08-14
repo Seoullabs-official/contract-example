@@ -1,6 +1,6 @@
 import { initConfigurationReturnKeyPair } from '../utils/initConfig';
 
-const SASEUL = require('saseul');
+import XPHERE from 'xphere';
 
 const SPACE = 'XRC Hans NFT 11';
 
@@ -8,7 +8,7 @@ const SPACE = 'XRC Hans NFT 11';
   try {
     let { keypair } = await initConfigurationReturnKeyPair();
 
-    let cid = SASEUL.Enc.cid(keypair.address, SPACE);
+    let cid = XPHERE.Enc.cid(keypair.address, SPACE);
 
     let transaction = {
       cid,
@@ -16,8 +16,8 @@ const SPACE = 'XRC Hans NFT 11';
       address: keypair.address,
     };
 
-    const balance = await SASEUL.Rpc.request(
-      SASEUL.Rpc.signedRequest(transaction, keypair.private_key)
+    const balance = await XPHERE.Rpc.request(
+      XPHERE.Rpc.signedRequest(transaction, keypair.private_key)
     );
     console.log(balance);
   } catch (error) {

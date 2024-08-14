@@ -6,8 +6,8 @@
     "config-ini-parser": "^1.6.1",
     "path": "^0.12.7",
     "prompt-sync": "^4.2.0",
-    "saseul": "^2.8.0",
-    "tweetnacl": "^1.0.3"
+    "tweetnacl": "^1.0.3",
+    "xphere": "^1.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.12.4"

@@ -1,16 +1,14 @@
-const SASEUL = require('saseul');
+import XPHERE from 'xphere';
 
 import { NFTParams } from '../types/contractType';
 
-let op = SASEUL.SmartContract.Operator;
+const op = XPHERE.SmartContract.Operator;
 
-export function issue(data: NFTParams) {
+function issue(data: NFTParams) {
   const { writer, space } = data;
-  let condition: boolean;
-  let err_msg: string;
-  let update: any;
+  let update;
 
-  let method = new SASEUL.SmartContract.Method({
+  const method = new XPHERE.SmartContract.Method({
     type: 'contract',
     name: 'Issue',
     version: '1',
@@ -31,18 +29,18 @@ export function issue(data: NFTParams) {
     requirements: true,
   });
 
-  let from = op.load_param('from');
-  let name = op.load_param('name');
-  let symbol = op.load_param('symbol');
+  const from = op.load_param('from');
+  const name = op.load_param('name');
+  const symbol = op.load_param('symbol');
 
   // writer === from
-  condition = op.eq(writer, from);
-  err_msg = 'You are not the contract writer.';
-  method.addExecution(op.condition(condition, err_msg));
+  const condition = op.eq(writer, from);
+  const errMsg = 'You are not the contract writer.';
+  method.addExecution(op.condition(condition, errMsg));
 
-  let nameHash = op.id_hash('name');
-  let symbolHash = op.id_hash('symbol');
-  let totalSupplyHash = op.id_hash('total_supply');
+  const nameHash = op.id_hash('name');
+  const symbolHash = op.id_hash('symbol');
+  const totalSupplyHash = op.id_hash('totalSupply');
 
   // save info
   update = op.write_universal('collection', nameHash, name);
@@ -57,13 +55,11 @@ export function issue(data: NFTParams) {
   return method;
 }
 
-export function mint(data: NFTParams) {
+function mint(data: NFTParams) {
   const { writer, space } = data;
-  let condition: boolean;
-  let err_msg: string;
-  let update: any;
+  let update;
 
-  let method = new SASEUL.SmartContract.Method({
+  const method = new XPHERE.SmartContract.Method({
     type: 'contract',
     name: 'Mint',
     version: '1',
@@ -100,37 +96,38 @@ export function mint(data: NFTParams) {
     type: 'any',
     requirements: false,
   });
-  let from = op.load_param('from');
-  let tokenId = op.load_param('tokenId');
-  let name = op.load_param('name');
-  let description = op.load_param('description');
-  let image = op.load_param('image');
-  let attribute = op.load_param('attribute');
 
-  let tokenHash = op.id_hash(tokenId);
+  const from = op.load_param('from');
+  const tokenId = op.load_param('tokenId');
+  const name = op.load_param('name');
+  const description = op.load_param('description');
+  const image = op.load_param('image');
+  const attribute = op.load_param('attribute');
 
-  let totalSupplyHash = op.id_hash('total_supply');
-  let already_tokenId = op.read_universal(
+  const tokenHash = op.id_hash(tokenId);
+
+  const totalSupplyHash = op.id_hash('totalSupply');
+  const alreadyTokenId = op.read_universal(
     op.concat(['inventory_', from]),
     tokenHash,
     null
   );
 
-  // already_tokenId == null
-  condition = op.eq(already_tokenId, null);
-  err_msg = 'this token ID already exists.';
-  method.addExecution(op.condition(condition, err_msg));
+  // alreadyTokenId == null
+  const condition = op.eq(alreadyTokenId, null);
+  const errMsg = 'this token ID already exists.';
+  method.addExecution(op.condition(condition, errMsg));
 
-  let total_supply = op.read_universal('collection', totalSupplyHash, '0');
+  const totalSupply = op.read_universal('collection', totalSupplyHash, '0');
   update = op.write_universal(
     'collection',
     totalSupplyHash,
-    op.add([total_supply, '1'])
+    op.add([totalSupply, '1'])
   ); // defatul : 1
   method.addExecution(update);
 
   // balance
-  let balance = op.read_universal('balance', from, '0');
+  const balance = op.read_universal('balance', from, '0');
   update = op.write_universal('balance', from, op.add([balance, '1']));
   method.addExecution(update);
 
@@ -152,13 +149,10 @@ export function mint(data: NFTParams) {
   return method;
 }
 
-export function tokenURI(data: NFTParams) {
+function tokenURI(data: NFTParams) {
   const { writer, space } = data;
-  let condition: boolean;
-  let err_msg: string;
-  let response: any;
 
-  let method = new SASEUL.SmartContract.Method({
+  const method = new XPHERE.SmartContract.Method({
     type: 'request',
     name: 'TokenURI',
     version: '1',
@@ -173,15 +167,15 @@ export function tokenURI(data: NFTParams) {
     requirements: true,
   });
 
-  let tokenId = op.load_param('tokenId');
-  let tokenHash = op.id_hash(tokenId);
-  let metadata = op.read_universal('metadata', tokenHash, null);
+  const tokenId = op.load_param('tokenId');
+  const tokenHash = op.id_hash(tokenId);
+  const metadata = op.read_universal('metadata', tokenHash, null);
 
-  condition = op.eq(metadata, null);
-  err_msg = 'The tokenURI for this tokenId does not exist.';
-  method.addExecution(op.condition(condition, err_msg));
+  const condition = op.eq(metadata, null);
+  const errMsg = 'The tokenURI for this tokenId does not exist.';
+  method.addExecution(op.condition(condition, errMsg));
 
-  response = op.response({
+  const response = op.response({
     metadata,
   });
 
@@ -189,13 +183,11 @@ export function tokenURI(data: NFTParams) {
 
   return method;
 }
-export function ownerOf(data: NFTParams) {
-  const { writer, space } = data;
-  let condition: boolean;
-  let err_msg: string;
-  let response: any;
 
-  let method = new SASEUL.SmartContract.Method({
+function ownerOf(data: NFTParams) {
+  const { writer, space } = data;
+
+  const method = new XPHERE.SmartContract.Method({
     type: 'request',
     name: 'OwnerOf',
     version: '1',
@@ -210,17 +202,17 @@ export function ownerOf(data: NFTParams) {
     requirements: true,
   });
 
-  let tokenId = op.load_param('tokenId');
-  let tokenHash = op.id_hash(tokenId);
-  let owner = op.read_universal('owner', tokenHash);
+  const tokenId = op.load_param('tokenId');
+  const tokenHash = op.id_hash(tokenId);
+  const owner = op.read_universal('owner', tokenHash);
 
   // owner !== null
-  condition = op.ne(owner, null);
-  err_msg = 'The token does not exist.';
-  method.addExecution(op.condition(condition, err_msg));
+  const condition = op.ne(owner, null);
+  const errMsg = 'The token does not exist.';
+  method.addExecution(op.condition(condition, errMsg));
 
   // return owner
-  response = op.response({
+  const response = op.response({
     owner,
   });
 
@@ -229,11 +221,10 @@ export function ownerOf(data: NFTParams) {
   return method;
 }
 
-export function listItem(data: NFTParams) {
+function listItem(data: NFTParams) {
   const { writer, space } = data;
-  let response: any;
 
-  let method = new SASEUL.SmartContract.Method({
+  const method = new XPHERE.SmartContract.Method({
     type: 'request',
     name: 'ListTokenOf',
     version: '1',
@@ -256,28 +247,28 @@ export function listItem(data: NFTParams) {
   method.addParameter({
     name: 'address',
     type: 'string',
-    maxlength: SASEUL.Enc.ID_HASH_SIZE,
+    maxlength: XPHERE.Enc.ID_HASH_SIZE,
     requirements: true,
   });
-  let address = op.load_param('address');
-  let page = op.load_param('page');
-  let count = op.load_param('count');
-  let inventory = op.concat(['inventory_', address]);
+
+  const address = op.load_param('address');
+  const page = op.load_param('page');
+  const count = op.load_param('count');
+  const inventory = op.concat(['inventory_', address]);
 
   // return list
-  let list = op.list_universal(inventory, page, count);
+  const list = op.list_universal(inventory, page, count);
 
-  response = op.response(list);
+  const response = op.response(list);
   method.addExecution(response);
 
   return method;
 }
 
-export function balanceOf(data: NFTParams) {
+function balanceOf(data: NFTParams) {
   const { writer, space } = data;
-  let response: any;
 
-  let method = new SASEUL.SmartContract.Method({
+  const method = new XPHERE.SmartContract.Method({
     type: 'request',
     name: 'BalanceOf',
     version: '1',
@@ -288,27 +279,25 @@ export function balanceOf(data: NFTParams) {
   method.addParameter({
     name: 'address',
     type: 'string',
-    maxlength: SASEUL.Enc.ID_HASH_SIZE,
+    maxlength: XPHERE.Enc.ID_HASH_SIZE,
     requirements: true,
   });
 
-  let address = op.load_param('address');
-  let balance = op.read_universal('balance', address, '0');
+  const address = op.load_param('address');
+  const balance = op.read_universal('balance', address, '0');
 
   // return balance
-  response = op.response({ balance });
+  const response = op.response({ balance });
   method.addExecution(response);
 
   return method;
 }
 
-export function getInfo(data: NFTParams) {
+function getInfo(data: NFTParams) {
   const { writer, space } = data;
-  let condition: boolean;
-  let err_msg: string;
-  let response: any;
+  let condition, errMsg;
 
-  let method = new SASEUL.SmartContract.Method({
+  const method = new XPHERE.SmartContract.Method({
     type: 'request',
     name: 'GetInfo',
     version: '1',
@@ -325,31 +314,31 @@ export function getInfo(data: NFTParams) {
   method.addParameter({
     name: 'address',
     type: 'string',
-    maxlength: SASEUL.Enc.ID_HASH_SIZE,
+    maxlength: XPHERE.Enc.ID_HASH_SIZE,
     requirements: true,
   });
 
-  let tokenId = op.load_param('tokenId');
-  let tokenHash = op.id_hash(tokenId);
+  const tokenId = op.load_param('tokenId');
+  const tokenHash = op.id_hash(tokenId);
 
-  let owner = op.read_universal('owner', tokenHash);
-  let address = op.load_param('address');
+  const owner = op.read_universal('owner', tokenHash);
+  const address = op.load_param('address');
 
   condition = op.ne(owner, null);
-  err_msg = 'owner null.';
-  method.addExecution(op.condition(condition, err_msg));
+  errMsg = 'owner null.';
+  method.addExecution(op.condition(condition, errMsg));
 
   condition = op.eq(owner, address);
-  err_msg = 'address you entered is not owned by the owner.';
-  method.addExecution(op.condition(condition, err_msg));
+  errMsg = 'address you entered is not owned by the owner.';
+  method.addExecution(op.condition(condition, errMsg));
 
   // return list
-  let inventory = op.read_universal(
+  const inventory = op.read_universal(
     op.concat(['inventory_', address]),
     tokenHash
   );
 
-  response = op.response({
+  const response = op.response({
     tokenId: tokenId,
     owner: owner,
     info: inventory,
@@ -359,13 +348,11 @@ export function getInfo(data: NFTParams) {
   return method;
 }
 
-export function transfer(data: NFTParams) {
+function transfer(data: NFTParams) {
   const { writer, space } = data;
-  let condition: boolean;
-  let err_msg: string;
-  let update: any;
+  let condition, errMsg, update;
 
-  let method = new SASEUL.SmartContract.Method({
+  const method = new XPHERE.SmartContract.Method({
     type: 'contract',
     name: 'Transfer', // transfer
     version: '1',
@@ -376,7 +363,7 @@ export function transfer(data: NFTParams) {
   method.addParameter({
     name: 'to',
     type: 'string',
-    maxlength: SASEUL.Enc.ID_HASH_SIZE,
+    maxlength: XPHERE.Enc.ID_HASH_SIZE,
     requirements: true,
   });
   method.addParameter({
@@ -386,71 +373,70 @@ export function transfer(data: NFTParams) {
     requirements: true,
   });
 
-  let from = op.load_param('from');
-  let to = op.load_param('to');
-  let tokenId = op.load_param('tokenId');
-  let tokenHash = op.id_hash(tokenId);
+  const from = op.load_param('from');
+  const to = op.load_param('to');
+  const tokenId = op.load_param('tokenId');
+  const tokenHash = op.id_hash(tokenId);
 
-  let from_balance = op.read_universal('balance', from, '0');
-  let to_balance = op.read_universal('balance', to, '0');
+  const fromBalance = op.read_universal('balance', from, '0');
+  const toBalance = op.read_universal('balance', to, '0');
 
-  let owner = op.read_universal('owner', tokenHash);
+  const owner = op.read_universal('owner', tokenHash);
 
-  let inventory_to = op.concat(['inventory_', to]);
+  const inventoryTo = op.concat(['inventory_', to]);
 
-  let inventory_from = op.concat(['inventory_', from]);
-  let inventoryInfoOfFrom = op.read_universal(inventory_from, tokenHash);
+  const inventoryFrom = op.concat(['inventory_', from]);
+  const inventoryInfoOfFrom = op.read_universal(inventoryFrom, tokenHash);
 
   // from !== to
   condition = op.ne(from, to);
-  err_msg = "You can't send to yourself.";
-  method.addExecution(op.condition(condition, err_msg));
+  errMsg = "You can't send to yourself.";
+  method.addExecution(op.condition(condition, errMsg));
 
   // from === owner
   condition = op.eq(from, owner);
-  err_msg = 'You are not the owner of the token.';
-  method.addExecution(op.condition(condition, err_msg));
+  errMsg = 'You are not the owner of the token.';
+  method.addExecution(op.condition(condition, errMsg));
 
   // inventoryInfoOfFrom !== null
   condition = op.ne(inventoryInfoOfFrom, null);
-  err_msg = 'the token ID does not exist in the address.';
-  method.addExecution(op.condition(condition, err_msg));
+  errMsg = 'the token ID does not exist in the address.';
+  method.addExecution(op.condition(condition, errMsg));
 
-  // from_balance >= 1
-  condition = op.gte(from_balance, '1');
-  err_msg = "You can't send more than what you have.";
-  method.addExecution(op.condition(condition, err_msg));
+  // fromBalance >= 1
+  condition = op.gte(fromBalance, '1');
+  errMsg = "You can't send more than what you have.";
+  method.addExecution(op.condition(condition, errMsg));
 
   // owner = to;
   update = op.write_universal('owner', tokenHash, to);
   method.addExecution(update);
 
-  // from_balance = from_balance - amount;
-  from_balance = op.sub([from_balance, '1']);
-  update = op.write_universal('balance', from, from_balance);
+  // fromBalance = fromBalance - amount;
+  const updateFromBalance = op.sub([fromBalance, '1']);
+  update = op.write_universal('balance', from, updateFromBalance);
   method.addExecution(update);
 
-  // to_balance = to_balance + amount;
-  to_balance = op.add([to_balance, '1']);
-  update = op.write_universal('balance', to, to_balance);
+  // toBalance = toBalance + amount;
+  const updateToBalance = op.add([toBalance, '1']);
+  update = op.write_universal('balance', to, updateToBalance);
   method.addExecution(update);
 
   // inventory: from = {}
-  update = op.write_universal(inventory_from, tokenHash, {});
+  update = op.write_universal(inventoryFrom, tokenHash, {});
   method.addExecution(update);
 
   // inventory: to = token info
-  update = op.write_universal(inventory_to, tokenHash, inventoryInfoOfFrom);
+  update = op.write_universal(inventoryTo, tokenHash, inventoryInfoOfFrom);
   method.addExecution(update);
 
   return method;
 }
 
-export function totalSupply(data: NFTParams) {
+function totalSupply(data: NFTParams) {
   const { writer, space } = data;
-  let response: any;
 
-  let method = new SASEUL.SmartContract.Method({
+  const method = new XPHERE.SmartContract.Method({
     type: 'request',
     name: 'totalSupply',
     version: '1',
@@ -458,22 +444,19 @@ export function totalSupply(data: NFTParams) {
     writer: writer,
   });
 
-  let totalSupplyHash = op.id_hash('total_supply');
-  let total_supply = op.read_universal('collection', totalSupplyHash, '0');
+  const totalSupplyHash = op.id_hash('totalSupply');
+  const totalSupply = op.read_universal('collection', totalSupplyHash, '0');
 
-  response = op.response({ total_supply });
+  const response = op.response({ totalSupply });
   method.addExecution(response);
 
   return method;
 }
 
-export function name(data: NFTParams) {
+function name(data: NFTParams) {
   const { writer, space } = data;
-  let condition: boolean;
-  let err_msg: string;
-  let response: any;
 
-  let method = new SASEUL.SmartContract.Method({
+  const method = new XPHERE.SmartContract.Method({
     type: 'request',
     name: 'name',
     version: '1',
@@ -481,26 +464,23 @@ export function name(data: NFTParams) {
     writer: writer,
   });
 
-  let nameHash = op.id_hash('name');
-  let collectionName = op.read_universal('collection', nameHash);
+  const nameHash = op.id_hash('name');
+  const collectionName = op.read_universal('collection', nameHash);
 
-  condition = op.ne(collectionName, null);
-  err_msg = 'Collection name does not exist.';
-  method.addExecution(op.condition(condition, err_msg));
+  const condition = op.ne(collectionName, null);
+  const errMsg = 'Collection name does not exist.';
+  method.addExecution(op.condition(condition, errMsg));
 
-  response = op.response(collectionName);
+  const response = op.response(collectionName);
   method.addExecution(response);
 
   return method;
 }
 
-export function symbol(data: NFTParams) {
+function symbol(data: NFTParams) {
   const { writer, space } = data;
-  let condition: boolean;
-  let err_msg: string;
-  let response: any;
 
-  let method = new SASEUL.SmartContract.Method({
+  const method = new XPHERE.SmartContract.Method({
     type: 'request',
     name: 'symbol',
     version: '1',
@@ -508,15 +488,29 @@ export function symbol(data: NFTParams) {
     writer: writer,
   });
 
-  let symbolHash = op.id_hash('symbol');
-  let symbol = op.read_universal('collection', symbolHash);
+  const symbolHash = op.id_hash('symbol');
+  const symbol = op.read_universal('collection', symbolHash);
 
-  condition = op.ne(symbol, null);
-  err_msg = 'Token symbol does not exist.';
-  method.addExecution(op.condition(condition, err_msg));
+  const condition = op.ne(symbol, null);
+  const errMsg = 'Token symbol does not exist.';
+  method.addExecution(op.condition(condition, errMsg));
 
-  response = op.response(symbol);
+  const response = op.response(symbol);
   method.addExecution(response);
 
   return method;
 }
+
+export = {
+  issue,
+  mint,
+  transfer,
+  name,
+  symbol,
+  totalSupply,
+  getInfo,
+  balanceOf,
+  listItem,
+  ownerOf,
+  tokenURI,
+};

@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { ConfigIniParser } from 'config-ini-parser';
 
-const SASEUL = require('saseul');
+import XPHERE from 'xphere';
 
 (async function () {
   const space = 'TPHERE XRC NFT 1';
@@ -19,14 +19,14 @@ const SASEUL = require('saseul');
 
   let peer = parser.get('Network', 'peers[]').replace(/^"(.*)"$/, '$1');
 
-  SASEUL.Rpc.endpoint(peer);
+  XPHERE.Rpc.endpoint(peer);
 
   let json = await fs.promises.readFile(root + '/keypair.json', {
     encoding: 'utf-8',
   });
   let keypair = JSON.parse(json);
 
-  let contract = new SASEUL.SmartContract.Contract(keypair.address, space);
+  let contract = new XPHERE.SmartContract.Contract(keypair.address, space);
 
   // await contract.addMethod(
   //   nft.issue({ writer: keypair.address, space: space })
