@@ -4,13 +4,26 @@ import { ConfigIniParser } from 'config-ini-parser';
 import { Keypair } from '../types/keypairType';
 import XPHERE from 'xphere';
 
-const space = 'XPHERE TOKEN';
+const SPACE = 'XPHERE TOKEN';
 
-const mintContract = async (keypair: Keypair, cid: string): Promise<any> => {
+const sleep = async (ms: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
+const mintContract = async (
+  keypair: Keypair,
+  cid: string,
+  amount: number
+): Promise<any> => {
+  const decimalRes = await getDecimal(keypair, cid);
+  const decimal = decimalRes.data;
+
+  const realAmount = amount * 10 ** decimal;
+
   const transaction = {
     cid,
     type: 'Mint',
-    amount: '1000',
+    amount: realAmount.toString(),
     address: keypair.address,
   };
   return XPHERE.Rpc.broadcastTransaction(
@@ -31,9 +44,19 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
   );
 };
 
+const getDecimal = async (keypair: Keypair, cid: string): Promise<any> => {
+  const transaction = {
+    cid,
+    type: 'Decimals',
+  };
+  return XPHERE.Rpc.request(
+    XPHERE.Rpc.signedRequest(transaction, keypair.private_key)
+  );
+};
+
 (async (): Promise<void> => {
   try {
-    let root = path.join(path.dirname(__dirname), '..');
+    const root = path.join(path.dirname(__dirname), '..');
     const configPath = path.join(root, 'xphere.ini');
     const keypairPath = path.join(root, 'keypair.json');
 
@@ -52,12 +75,16 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
       encoding: 'utf-8',
     });
     const keypair: Keypair = JSON.parse(keypairContent);
-    const cid = XPHERE.Enc.cid(keypair.address, space);
+    const cid = XPHERE.Enc.cid(keypair.address, SPACE);
 
-    let issue = await issueContract(keypair, cid);
-    let mint = await mintContract(keypair, cid);
-
+    const issue = await issueContract(keypair, cid);
     console.log(issue, ':: issue');
+
+    if (issue.code === 200) {
+      await sleep(3000);
+    }
+
+    const mint = await mintContract(keypair, cid, 1000);
     console.log(mint, ':: mint');
   } catch (error) {
     console.error('Error:', error);

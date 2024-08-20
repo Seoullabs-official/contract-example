@@ -4,17 +4,36 @@ import { ConfigIniParser } from 'config-ini-parser';
 import { Keypair } from '../types/keypairType';
 import XPHERE from 'xphere';
 
-const space = 'XPHERE TOKEN';
+const SPACE = 'XPHERE TOKEN';
 
-const transfer = async (keypair: Keypair, cid: string): Promise<any> => {
+const transfer = async (
+  keypair: Keypair,
+  cid: string,
+  amount: number
+): Promise<any> => {
+  const decimalRes = await getDecimal(keypair, cid);
+  const decimal = decimalRes.data;
+
+  const realAmount = amount * 10 ** decimal;
+
   const transaction = {
     type: 'Transfer',
     cid,
     to: 'b44760c985e486f6adc6fa3419b092c44eb207b1ba7a',
-    amount: '100',
+    amount: realAmount.toString(),
   };
   return XPHERE.Rpc.broadcastTransaction(
     XPHERE.Rpc.signedTransaction(transaction, keypair.private_key)
+  );
+};
+
+const getDecimal = async (keypair: Keypair, cid: string): Promise<any> => {
+  const transaction = {
+    cid,
+    type: 'Decimals',
+  };
+  return XPHERE.Rpc.request(
+    XPHERE.Rpc.signedRequest(transaction, keypair.private_key)
   );
 };
 
@@ -39,9 +58,9 @@ const transfer = async (keypair: Keypair, cid: string): Promise<any> => {
       encoding: 'utf-8',
     });
     const keypair: Keypair = JSON.parse(keypairContent);
-    const cid = XPHERE.Enc.cid(keypair.address, space);
+    const cid = XPHERE.Enc.cid(keypair.address, SPACE);
 
-    const transferResult = await transfer(keypair, cid);
+    const transferResult = await transfer(keypair, cid, 100);
 
     console.log(transferResult, ':: transfer');
   } catch (error) {

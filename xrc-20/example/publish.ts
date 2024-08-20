@@ -16,7 +16,7 @@ import { ConfigIniParser } from 'config-ini-parser';
 import XPHERE from 'xphere';
 
 (async function () {
-  const space = 'XPHERE TOKEN';
+  const SPACE = 'XPHERE TOKEN';
 
   let root = path.join(path.dirname(__dirname), '..');
   let _input = await fs.promises.readFile(root + '/xphere.ini', {
@@ -35,16 +35,16 @@ import XPHERE from 'xphere';
   });
   let keypair = JSON.parse(json);
 
-  let contract = new XPHERE.SmartContract.Contract(keypair.address, space);
+  let contract = new XPHERE.SmartContract.Contract(keypair.address, SPACE);
 
-  contract.addMethod(issue(keypair.address, space, keypair.address));
-  contract.addMethod(mint(keypair.address, space));
-  contract.addMethod(transfer(keypair.address, space));
-  contract.addMethod(balanceOf(keypair.address, space));
-  contract.addMethod(totalSupply(keypair.address, space));
-  contract.addMethod(name(keypair.address, space));
-  contract.addMethod(symbol(keypair.address, space));
-  contract.addMethod(decimals(keypair.address, space));
+  contract.addMethod(issue(keypair.address, SPACE, keypair.address));
+  contract.addMethod(mint(keypair.address, SPACE));
+  contract.addMethod(transfer(keypair.address, SPACE));
+  contract.addMethod(balanceOf(keypair.address, SPACE));
+  contract.addMethod(totalSupply(keypair.address, SPACE));
+  contract.addMethod(name(keypair.address, SPACE));
+  contract.addMethod(symbol(keypair.address, SPACE));
+  contract.addMethod(decimals(keypair.address, SPACE));
 
   contract.publish(keypair.private_key);
 })();

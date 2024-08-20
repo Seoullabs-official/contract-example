@@ -104,6 +104,13 @@ export function mint(writer: string, space: string) {
 
   const totalSupplyHash = op.id_hash('totalSupply');
 
+  const nameHash = op.id_hash('name');
+  const tokenName = op.read_universal('token', nameHash);
+
+  condition = op.ne(tokenName, null);
+  errMsg = 'The token has not been issued yet.';
+  method.addExecution(op.condition(condition, errMsg));
+
   // amount > 0
   condition = op.gt(amount, '0');
   errMsg = 'The amount must be greater than 0.';
@@ -151,8 +158,8 @@ export function transfer(writer: string, space: string) {
   const to = op.load_param('to');
   const amount = op.load_param('amount');
 
-  const from_balance = op.read_universal('balance', from, '0');
-  const to_balance = op.read_universal('balance', to, '0');
+  const fromBalance = op.read_universal('balance', from, '0');
+  const toBalance = op.read_universal('balance', to, '0');
 
   // from !== to
   condition = op.ne(from, to);
@@ -164,17 +171,17 @@ export function transfer(writer: string, space: string) {
   errMsg = 'The amount must be greater than 0.';
   method.addExecution(op.condition(condition, errMsg));
 
-  // from_balance >= amount
-  condition = op.gte(from_balance, amount);
+  // fromBalance >= amount
+  condition = op.gte(fromBalance, amount);
   errMsg = "You can't send more than what you have.";
   method.addExecution(op.condition(condition, errMsg));
 
-  // from_balance = from_balance - amount;
-  update = op.write_universal('balance', from, op.sub([from_balance, amount]));
+  // fromBalance = fromBalance - amount;
+  update = op.write_universal('balance', from, op.sub([fromBalance, amount]));
   method.addExecution(update);
 
-  // to_balance = to_balance + amount;
-  update = op.write_universal('balance', to, op.add([to_balance, amount]));
+  // toBalance = toBalance + amount;
+  update = op.write_universal('balance', to, op.add([toBalance, amount]));
   method.addExecution(update);
 
   return method;
