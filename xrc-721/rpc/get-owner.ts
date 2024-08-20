@@ -2,7 +2,7 @@ import { initConfigurationReturnKeyPair } from '../utils/initConfig';
 
 import XPHERE from 'xphere';
 
-const SPACE = 'XRC Hans NFT 11';
+const SPACE = 'XPHERE TOKEN';
 
 (async function () {
   try {

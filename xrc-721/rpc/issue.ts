@@ -2,7 +2,7 @@ import { initConfigurationReturnKeyPair } from '../utils/initConfig';
 
 import XPHERE from 'xphere';
 
-const SPACE = 'XRC Hans NFT 11';
+const SPACE = 'XPHERE TOKEN';
 
 (async function () {
   try {
@@ -13,8 +13,8 @@ const SPACE = 'XRC Hans NFT 11';
     let transaction = {
       cid,
       type: 'Issue',
-      name: 'issue01 -4',
-      symbol: 'issue01 -4',
+      name: 'name',
+      symbol: 'symbol',
       from: keypair.address,
     };
 

@@ -6,7 +6,7 @@ import { ConfigIniParser } from 'config-ini-parser';
 
 import XPHERE from 'xphere';
 
-const SPACE = 'TPHERE XRC NFT 4';
+const SPACE = 'XPHERE TOKEN';
 
 (async function () {
   try {

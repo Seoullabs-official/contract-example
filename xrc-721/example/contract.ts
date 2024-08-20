@@ -4,7 +4,7 @@ import { ConfigIniParser } from 'config-ini-parser';
 import { Keypair } from '../types/keypairType';
 import XPHERE from 'xphere';
 
-const SPACE = 'TPHERE XRC NFT 4';
+const SPACE = 'XPHERE TOKEN';
 
 const fileReaderReturnBase64Encoded = async (
   imagePath: string
@@ -38,8 +38,8 @@ const mintContract = async (
   const transaction = {
     cid,
     type: 'Mint',
-    name: 'TPHERE ',
-    description: 'description ',
+    name: 'name',
+    description: 'description',
     tokenId: 1,
     image: base64data,
   };
@@ -52,9 +52,8 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
   const transaction = {
     cid,
     type: 'Issue',
-    name: 'collection zxcvzx',
-    symbol: 'collection symbol 4',
-    from: keypair.address,
+    name: 'name',
+    symbol: 'symbol',
   };
   return XPHERE.Rpc.broadcastTransaction(
     XPHERE.Rpc.signedTransaction(transaction, keypair.private_key)
@@ -74,11 +73,9 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
     });
     parser.parse(configContent);
 
-    // Set the XPHERE RPC endpoint
     const peer = parser.get('Network', 'peers[]').replace(/^"(.*)"$/, '$1');
     XPHERE.Rpc.endpoint(peer);
 
-    // Read the keypair file
     const keypairContent = await fs.promises.readFile(keypairPath, {
       encoding: 'utf-8',
     });
@@ -91,16 +88,17 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
       { address: keypair.address, private_key: keypair.private_key },
       cid
     );
-    // let mint = await mintContract(
-    //   { address: keypair.address, private_key: keypair.private_key },
-    //   cid,
-    //   nftExampleFileBase64
-    // );
-    // const transferResult = await transfer(keypair, cid);
+    let mint = await mintContract(
+      { address: keypair.address, private_key: keypair.private_key },
+      cid,
+      nftExampleFileBase64
+    );
+    const transferResult = await transfer(keypair, cid);
 
-    // console.log(transferResult, ':: transfer');
     console.log(issue, ':: issue');
-    // console.log(mint, ':: mint');
+    console.log(mint, ':: mint');
+
+    console.log(transferResult, ':: transfer');
   } catch (error) {
     console.error('Error:', error);
   }

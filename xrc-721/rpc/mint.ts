@@ -4,7 +4,7 @@ import * as path from 'path';
 
 import XPHERE from 'xphere';
 
-const SPACE = 'XRC Hans NFT 11';
+const SPACE = 'XPHERE TOKEN';
 
 const fileReaderReturnBase64Encoded = async (
   imagePath: string
@@ -29,8 +29,8 @@ const fileReaderReturnBase64Encoded = async (
     let transaction = {
       cid,
       type: 'Mint',
-      name: 'mint 8/6 - 4',
-      description: '00 desc 8/6 - 4',
+      name: 'XPHERE Token',
+      description: 'description',
       tokenId: '1',
       image: nftExampleFileBase64,
     };

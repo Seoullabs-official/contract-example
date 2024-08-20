@@ -2,7 +2,7 @@ import { initConfigurationReturnKeyPair } from '../utils/initConfig';
 
 import XPHERE from 'xphere';
 
-const SPACE = '';
+const SPACE = 'XPHERE TOKEN';
 
 (async function () {
   try {
