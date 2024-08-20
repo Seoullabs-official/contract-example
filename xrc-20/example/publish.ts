@@ -37,14 +37,16 @@ import XPHERE from 'xphere';
 
   let contract = new XPHERE.SmartContract.Contract(keypair.address, SPACE);
 
-  contract.addMethod(issue(keypair.address, SPACE, keypair.address));
-  contract.addMethod(mint(keypair.address, SPACE));
-  contract.addMethod(transfer(keypair.address, SPACE));
-  contract.addMethod(balanceOf(keypair.address, SPACE));
-  contract.addMethod(totalSupply(keypair.address, SPACE));
-  contract.addMethod(name(keypair.address, SPACE));
-  contract.addMethod(symbol(keypair.address, SPACE));
-  contract.addMethod(decimals(keypair.address, SPACE));
+  contract.addMethod(
+    issue({ writer: keypair.address, space: SPACE, publisher: keypair.address })
+  );
+  contract.addMethod(mint({ writer: keypair.address, space: SPACE }));
+  contract.addMethod(transfer({ writer: keypair.address, space: SPACE }));
+  contract.addMethod(balanceOf({ writer: keypair.address, space: SPACE }));
+  contract.addMethod(totalSupply({ writer: keypair.address, space: SPACE }));
+  contract.addMethod(name({ writer: keypair.address, space: SPACE }));
+  contract.addMethod(symbol({ writer: keypair.address, space: SPACE }));
+  contract.addMethod(decimals({ writer: keypair.address, space: SPACE }));
 
   contract.publish(keypair.private_key);
 })();
