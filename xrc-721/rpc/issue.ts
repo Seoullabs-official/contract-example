@@ -6,18 +6,18 @@ const SPACE = 'XPHERE TOKEN';
 
 (async function () {
   try {
-    let { keypair } = await initConfigurationReturnKeyPair();
+    const { keypair } = await initConfigurationReturnKeyPair();
 
-    let cid = XPHERE.Enc.cid(keypair.address, SPACE);
+    const cid = XPHERE.Enc.cid(keypair.address, SPACE);
 
-    let transaction = {
+    const transaction = {
       cid,
       type: 'Issue',
       name: 'name',
       symbol: 'symbol',
     };
 
-    let result = await XPHERE.Rpc.broadcastTransaction(
+    const result = await XPHERE.Rpc.broadcastTransaction(
       XPHERE.Rpc.signedTransaction(transaction, keypair.private_key)
     );
 

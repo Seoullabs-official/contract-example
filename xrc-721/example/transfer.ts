@@ -42,7 +42,7 @@ const transfer = async (keypair: Keypair, cid: string): Promise<any> => {
 
     const transferResult = await transfer(keypair, cid);
 
-    console.log(transferResult);
+    console.log('transfer :: ', transferResult);
   } catch (error) {
     console.error('Error:', error);
   }

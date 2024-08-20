@@ -39,9 +39,9 @@ const SPACE = 'XPHERE TOKEN';
     console.log('listItems :: ', xrc.listItems);
     console.log('tokenURI :: ', xrc.tokenURI);
 
-    let ownerToken = await getOwnerToken(cid, keypair);
+    const ownerToken = await getOwnerToken(cid, keypair);
 
-    let ownerInfo = await getOwnerInfo(cid, keypair, ownerToken);
+    const ownerInfo = await getOwnerInfo(cid, keypair, ownerToken);
 
     console.log('onwer :: ', ownerToken);
     console.log('ownerInfo :: ', ownerInfo);

@@ -6,11 +6,11 @@ const SPACE = 'XPHERE TOKEN';
 
 (async function () {
   try {
-    let { keypair } = await initConfigurationReturnKeyPair();
+    const { keypair } = await initConfigurationReturnKeyPair();
 
-    let cid = XPHERE.Enc.cid(keypair.address, SPACE);
+    const cid = XPHERE.Enc.cid(keypair.address, SPACE);
 
-    let transaction = {
+    const transaction = {
       cid,
       type: 'Symbol',
     };

@@ -71,11 +71,11 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
 
     const nftExampleFileBase64 = await fileReaderReturnBase64Encoded(imagePath);
 
-    let issue = await issueContract(keypair, cid);
-    let mint = await mintContract(keypair, cid, nftExampleFileBase64);
+    const issue = await issueContract(keypair, cid);
+    const mint = await mintContract(keypair, cid, nftExampleFileBase64);
 
-    console.log(issue, ':: issue');
-    console.log(mint, ':: mint');
+    console.log(issue, ' :: issue ');
+    console.log(mint, ' :: mint ');
   } catch (error) {
     console.error('Error:', error);
   }
