@@ -6,6 +6,10 @@ import XPHERE from 'xphere';
 
 const SPACE = 'XPHERE TOKEN';
 
+const sleep = async (ms: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 const fileReaderReturnBase64Encoded = async (
   imagePath: string
 ): Promise<string> => {
@@ -72,6 +76,11 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
     const nftExampleFileBase64 = await fileReaderReturnBase64Encoded(imagePath);
 
     const issue = await issueContract(keypair, cid);
+
+    if (issue.code === 200) {
+      await sleep(3000);
+    }
+
     const mint = await mintContract(keypair, cid, nftExampleFileBase64);
 
     console.log(issue, ' :: issue ');

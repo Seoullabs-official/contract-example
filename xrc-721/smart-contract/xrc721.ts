@@ -68,7 +68,7 @@ export function issue(data: NFTParams) {
 
 export function mint(data: NFTParams) {
   const { writer, space } = data;
-  let update;
+  let update, condition, errMsg;
 
   const method = new XPHERE.SmartContract.Method({
     type: 'contract',
@@ -116,17 +116,41 @@ export function mint(data: NFTParams) {
   const attribute = op.load_param('attribute');
 
   const tokenHash = op.id_hash(tokenId);
-
   const totalSupplyHash = op.id_hash('totalSupply');
+
+  const alreadyCollectionNameHash = op.id_hash('name');
+  const alreadyCollectionSymbolHash = op.id_hash('symbol');
+
+  const existCollectionName = op.read_universal(
+    'collection',
+    alreadyCollectionNameHash,
+    null
+  );
+
+  const existCollectionSymbol = op.read_universal(
+    'collection',
+    alreadyCollectionSymbolHash,
+    null
+  );
+
   const alreadyTokenId = op.read_universal(
     op.concat(['inventory_', from]),
     tokenHash,
     null
   );
 
+  // exist collection
+  condition = op.ne(existCollectionName, null);
+  errMsg = 'The created collection name does not exist.';
+  method.addExecution(op.condition(condition, errMsg));
+
+  condition = op.ne(existCollectionSymbol, null);
+  errMsg = 'The created collection symbol does not exist.';
+  method.addExecution(op.condition(condition, errMsg));
+
   // alreadyTokenId == null
-  const condition = op.eq(alreadyTokenId, null);
-  const errMsg = 'this token ID already exists.';
+  condition = op.eq(alreadyTokenId, null);
+  errMsg = 'this token ID already exists.';
   method.addExecution(op.condition(condition, errMsg));
 
   const totalSupply = op.read_universal('collection', totalSupplyHash, '0');
