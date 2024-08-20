@@ -16,7 +16,7 @@ import { ConfigIniParser } from 'config-ini-parser';
 import XPHERE from 'xphere';
 
 (async function () {
-  const space = 'XPHERE TOKEN 3';
+  const space = 'XPHERE TOKEN';
 
   let root = path.join(path.dirname(__dirname), '..');
   let _input = await fs.promises.readFile(root + '/xphere.ini', {

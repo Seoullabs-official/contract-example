@@ -84,15 +84,8 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
 
     const nftExampleFileBase64 = await fileReaderReturnBase64Encoded(imagePath);
 
-    let issue = await issueContract(
-      { address: keypair.address, private_key: keypair.private_key },
-      cid
-    );
-    let mint = await mintContract(
-      { address: keypair.address, private_key: keypair.private_key },
-      cid,
-      nftExampleFileBase64
-    );
+    let issue = await issueContract(keypair, cid);
+    let mint = await mintContract(keypair, cid, nftExampleFileBase64);
     const transferResult = await transfer(keypair, cid);
 
     console.log(issue, ':: issue');

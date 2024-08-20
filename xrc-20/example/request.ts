@@ -6,7 +6,7 @@ import { ConfigIniParser } from 'config-ini-parser';
 
 import XPHERE from 'xphere';
 
-const SPACE = 'XPHERE TOKEN 3';
+const SPACE = 'XPHERE TOKEN';
 
 async function fetchXrcInfo(cid: string, keypair: Keypair) {
   const privateKey = keypair.private_key;

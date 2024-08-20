@@ -4,19 +4,7 @@ import { ConfigIniParser } from 'config-ini-parser';
 import { Keypair } from '../types/keypairType';
 import XPHERE from 'xphere';
 
-const space = 'XPHERE TOKEN 3';
-
-const transfer = async (keypair: Keypair, cid: string): Promise<any> => {
-  const transaction = {
-    type: 'Transfer',
-    cid,
-    to: 'b44760c985e486f6adc6fa3419b092c44eb207b1ba7a',
-    amount: '100',
-  };
-  return XPHERE.Rpc.broadcastTransaction(
-    XPHERE.Rpc.signedTransaction(transaction, keypair.private_key)
-  );
-};
+const space = 'XPHERE TOKEN';
 
 const mintContract = async (keypair: Keypair, cid: string): Promise<any> => {
   const transaction = {
@@ -66,17 +54,9 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
     const keypair: Keypair = JSON.parse(keypairContent);
     const cid = XPHERE.Enc.cid(keypair.address, space);
 
-    let issue = await issueContract(
-      { address: keypair.address, private_key: keypair.private_key },
-      cid
-    );
-    let mint = await mintContract(
-      { address: keypair.address, private_key: keypair.private_key },
-      cid
-    );
-    // const transferResult = await transfer(keypair, cid);
+    let issue = await issueContract(keypair, cid);
+    let mint = await mintContract(keypair, cid);
 
-    // console.log(transferResult, ':: transfer');
     console.log(issue, ':: issue');
     console.log(mint, ':: mint');
   } catch (error) {
