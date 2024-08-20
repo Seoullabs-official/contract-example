@@ -1,8 +1,11 @@
 import XPHERE from 'xphere';
 
+import { TokenParams, TokenIssueParams } from '../types/contractType';
+
 const op = XPHERE.SmartContract.Operator;
 
-export function issue(writer: string, space: string, publisher: string) {
+export function issue(data: TokenIssueParams) {
+  const { writer, space, publisher } = data;
   let condition, errMsg, update;
 
   const method = new XPHERE.SmartContract.Method({
@@ -75,7 +78,8 @@ export function issue(writer: string, space: string, publisher: string) {
   return method;
 }
 
-export function mint(writer: string, space: string) {
+export function mint(data: TokenParams) {
+  const { writer, space } = data;
   let condition, errMsg, update;
 
   const method = new XPHERE.SmartContract.Method({
@@ -131,8 +135,10 @@ export function mint(writer: string, space: string) {
   return method;
 }
 
-export function transfer(writer: string, space: string) {
+export function transfer(data: TokenParams) {
+  const { writer, space } = data;
   let condition, errMsg, update;
+
   const method = new XPHERE.SmartContract.Method({
     type: 'contract',
     name: 'Transfer',
@@ -187,7 +193,9 @@ export function transfer(writer: string, space: string) {
   return method;
 }
 
-export function balanceOf(writer: string, space: string) {
+export function balanceOf(data: TokenParams) {
+  const { writer, space } = data;
+
   const method = new XPHERE.SmartContract.Method({
     type: 'request',
     name: 'BalanceOf',
@@ -215,7 +223,9 @@ export function balanceOf(writer: string, space: string) {
   return method;
 }
 
-export function totalSupply(writer: string, space: string) {
+export function totalSupply(data: TokenParams) {
+  const { writer, space } = data;
+
   const method = new XPHERE.SmartContract.Method({
     type: 'request',
     name: 'TotalSupply',
@@ -233,7 +243,9 @@ export function totalSupply(writer: string, space: string) {
   return method;
 }
 
-export function name(writer: string, space: string) {
+export function name(data: TokenParams) {
+  const { writer, space } = data;
+
   const method = new XPHERE.SmartContract.Method({
     type: 'request',
     name: 'Name',
@@ -255,7 +267,9 @@ export function name(writer: string, space: string) {
   return method;
 }
 
-export function symbol(writer: string, space: string) {
+export function symbol(data: TokenParams) {
+  const { writer, space } = data;
+
   const method = new XPHERE.SmartContract.Method({
     type: 'request',
     name: 'Symbol',
@@ -277,7 +291,9 @@ export function symbol(writer: string, space: string) {
   return method;
 }
 
-export function decimals(writer: string, space: string) {
+export function decimals(data: TokenParams) {
+  const { writer, space } = data;
+
   const method = new XPHERE.SmartContract.Method({
     type: 'request',
     name: 'Decimals',
