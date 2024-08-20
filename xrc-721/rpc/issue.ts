@@ -15,7 +15,6 @@ const SPACE = 'XPHERE TOKEN';
       type: 'Issue',
       name: 'name',
       symbol: 'symbol',
-      from: keypair.address,
     };
 
     let result = await XPHERE.Rpc.broadcastTransaction(
