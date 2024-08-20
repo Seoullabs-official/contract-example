@@ -4,7 +4,7 @@ import { ConfigIniParser } from 'config-ini-parser';
 import { Keypair } from '../types/keypairType';
 import XPHERE from 'xphere';
 
-const SPACE = 'TPHERE XRC NFT 1';
+const SPACE = 'TPHERE XRC NFT 4';
 
 const fileReaderReturnBase64Encoded = async (
   imagePath: string
@@ -52,8 +52,8 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
   const transaction = {
     cid,
     type: 'Issue',
-    name: 'collection name',
-    symbol: 'collection symbol',
+    name: 'collection zxcvzx',
+    symbol: 'collection symbol 4',
     from: keypair.address,
   };
   return XPHERE.Rpc.broadcastTransaction(
@@ -91,16 +91,16 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
       { address: keypair.address, private_key: keypair.private_key },
       cid
     );
-    let mint = await mintContract(
-      { address: keypair.address, private_key: keypair.private_key },
-      cid,
-      nftExampleFileBase64
-    );
+    // let mint = await mintContract(
+    //   { address: keypair.address, private_key: keypair.private_key },
+    //   cid,
+    //   nftExampleFileBase64
+    // );
     // const transferResult = await transfer(keypair, cid);
 
     // console.log(transferResult, ':: transfer');
     console.log(issue, ':: issue');
-    console.log(mint, ':: mint');
+    // console.log(mint, ':: mint');
   } catch (error) {
     console.error('Error:', error);
   }

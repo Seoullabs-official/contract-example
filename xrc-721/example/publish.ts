@@ -19,7 +19,7 @@ import { ConfigIniParser } from 'config-ini-parser';
 import XPHERE from 'xphere';
 
 (async function () {
-  const space = 'TPHERE XRC NFT 1';
+  const space = 'TPHERE XRC NFT 4';
 
   let root = path.join(path.dirname(__dirname), '..');
   let _input = await fs.promises.readFile(root + '/xphere.ini', {
@@ -40,32 +40,17 @@ import XPHERE from 'xphere';
 
   let contract = new XPHERE.SmartContract.Contract(keypair.address, space);
 
-  // await contract.addMethod(
-  //   issue({ writer: keypair.address, space: space })
-  // );
-  // await contract.addMethod(mint({ writer: keypair.address, space: space }));
-  // await contract.addMethod(
-  //   getInfo({ writer: keypair.address, space: space })
-  // );
-  // await contract.addMethod(name({ writer: keypair.address, space: space }));
-  // await contract.addMethod(
-  //   symbol({ writer: keypair.address, space: space })
-  // );
-  // await contract.addMethod(
-  //   transfer({ writer: keypair.address, space: space })
-  // );
-  // await contract.addMethod(
-  //   totalSupply({ writer: keypair.address, space: space })
-  // );
-  // await contract.addMethod(
-  //   listItem({ writer: keypair.address, space: space })
-  // );
-  // await contract.addMethod(
-  //   ownerOf({ writer: keypair.address, space: space })
-  // );
-  // await contract.addMethod(
-  //   balanceOf({ writer: keypair.address, space: space })
-  // );
-  await contract.addMethod(tokenURI({ writer: keypair.address, space: space }));
+  contract.addMethod(issue({ writer: keypair.address, space: space }));
+  contract.addMethod(mint({ writer: keypair.address, space: space }));
+  contract.addMethod(getInfo({ writer: keypair.address, space: space }));
+  contract.addMethod(name({ writer: keypair.address, space: space }));
+  contract.addMethod(symbol({ writer: keypair.address, space: space }));
+  contract.addMethod(transfer({ writer: keypair.address, space: space }));
+  contract.addMethod(totalSupply({ writer: keypair.address, space: space }));
+  contract.addMethod(listItem({ writer: keypair.address, space: space }));
+  contract.addMethod(ownerOf({ writer: keypair.address, space: space }));
+  contract.addMethod(balanceOf({ writer: keypair.address, space: space }));
+  contract.addMethod(tokenURI({ writer: keypair.address, space: space }));
+
   await contract.publish(keypair.private_key);
 })();

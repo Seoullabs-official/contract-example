@@ -6,7 +6,7 @@ const op = XPHERE.SmartContract.Operator;
 
 export function issue(data: NFTParams) {
   const { writer, space } = data;
-  let update;
+  let update, condition, errMsg;
 
   const method = new XPHERE.SmartContract.Method({
     type: 'contract',
@@ -33,14 +33,25 @@ export function issue(data: NFTParams) {
   const name = op.load_param('name');
   const symbol = op.load_param('symbol');
 
-  // writer === from
-  const condition = op.eq(writer, from);
-  const errMsg = 'You are not the contract writer.';
-  method.addExecution(op.condition(condition, errMsg));
-
   const nameHash = op.id_hash('name');
   const symbolHash = op.id_hash('symbol');
   const totalSupplyHash = op.id_hash('totalSupply');
+
+  let curName = op.read_universal('collection', nameHash, null);
+  let curSymbol = op.read_universal('collection', symbolHash, null);
+
+  // writer === from
+  condition = op.eq(writer, from);
+  errMsg = 'You are not the contract writer.';
+  method.addExecution(op.condition(condition, errMsg));
+
+  condition = op.eq(curName, null);
+  errMsg = 'Collection name already specified.';
+  method.addExecution(op.condition(condition, errMsg));
+
+  condition = op.eq(curSymbol, null);
+  errMsg = 'Collection symbol already specified.';
+  method.addExecution(op.condition(condition, errMsg));
 
   // save info
   update = op.write_universal('collection', nameHash, name);
@@ -354,7 +365,7 @@ export function transfer(data: NFTParams) {
 
   const method = new XPHERE.SmartContract.Method({
     type: 'contract',
-    name: 'Transfer', // transfer
+    name: 'Transfer',
     version: '1',
     space: space,
     writer: writer,
@@ -438,7 +449,7 @@ export function totalSupply(data: NFTParams) {
 
   const method = new XPHERE.SmartContract.Method({
     type: 'request',
-    name: 'totalSupply',
+    name: 'TotalSupply',
     version: '1',
     space: space,
     writer: writer,
@@ -458,7 +469,7 @@ export function name(data: NFTParams) {
 
   const method = new XPHERE.SmartContract.Method({
     type: 'request',
-    name: 'name',
+    name: 'Name',
     version: '1',
     space: space,
     writer: writer,
@@ -482,7 +493,7 @@ export function symbol(data: NFTParams) {
 
   const method = new XPHERE.SmartContract.Method({
     type: 'request',
-    name: 'symbol',
+    name: 'Symbol',
     version: '1',
     space: space,
     writer: writer,
@@ -492,7 +503,7 @@ export function symbol(data: NFTParams) {
   const symbol = op.read_universal('collection', symbolHash);
 
   const condition = op.ne(symbol, null);
-  const errMsg = 'Token symbol does not exist.';
+  const errMsg = 'Collection symbol does not exist.';
   method.addExecution(op.condition(condition, errMsg));
 
   const response = op.response(symbol);

@@ -6,7 +6,7 @@ import { ConfigIniParser } from 'config-ini-parser';
 
 import XPHERE from 'xphere';
 
-const SPACE = 'TPHERE XRC NFT 1';
+const SPACE = 'TPHERE XRC NFT 4';
 
 (async function () {
   try {
@@ -55,10 +55,10 @@ async function fetchXrcInfo(cid: string, keypair: Keypair) {
   const address = keypair.address;
 
   const requestParams = [
-    { type: 'name' },
-    { type: 'symbol' },
+    { type: 'Name' },
+    { type: 'Symbol' },
     { type: 'ListTokenOf', page: 0, count: 3, address },
-    { type: 'totalSupply' },
+    { type: 'TotalSupply' },
     { type: 'BalanceOf', address },
     { type: 'TokenURI', tokenId: 1 },
   ];

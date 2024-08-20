@@ -12,7 +12,7 @@ const SPACE = 'XRC Hans NFT 11';
 
     let transaction = {
       cid,
-      type: 'symbol',
+      type: 'Symbol',
     };
 
     const symbol = await XPHERE.Rpc.request(
