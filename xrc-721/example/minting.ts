@@ -17,19 +17,6 @@ const fileReaderReturnBase64Encoded = async (
   }
 };
 
-const transfer = async (keypair: Keypair, cid: string): Promise<any> => {
-  const transaction = {
-    type: 'Transfer',
-    cid,
-    from: keypair.address,
-    tokenId: 1,
-    to: 'b44760c985e486f6adc6fa3419b092c44eb207b1ba7a',
-  };
-  return XPHERE.Rpc.broadcastTransaction(
-    XPHERE.Rpc.signedTransaction(transaction, keypair.private_key)
-  );
-};
-
 const mintContract = async (
   keypair: Keypair,
   cid: string,
@@ -84,21 +71,11 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
 
     const nftExampleFileBase64 = await fileReaderReturnBase64Encoded(imagePath);
 
-    let issue = await issueContract(
-      { address: keypair.address, private_key: keypair.private_key },
-      cid
-    );
-    let mint = await mintContract(
-      { address: keypair.address, private_key: keypair.private_key },
-      cid,
-      nftExampleFileBase64
-    );
-    const transferResult = await transfer(keypair, cid);
+    let issue = await issueContract(keypair, cid);
+    let mint = await mintContract(keypair, cid, nftExampleFileBase64);
 
     console.log(issue, ':: issue');
     console.log(mint, ':: mint');
-
-    console.log(transferResult, ':: transfer');
   } catch (error) {
     console.error('Error:', error);
   }

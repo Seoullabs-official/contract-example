@@ -14,7 +14,7 @@ const SPACE = 'XPHERE TOKEN';
       type: 'Transfer',
       cid,
       from: keypair.address,
-      tokenId: '1',
+      tokenId: 1,
       to: 'b44760c985e486f6adc6fa3419b092c44eb207b1ba7a',
     };
 

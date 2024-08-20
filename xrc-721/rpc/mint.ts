@@ -31,7 +31,7 @@ const fileReaderReturnBase64Encoded = async (
       type: 'Mint',
       name: 'XPHERE Token',
       description: 'description',
-      tokenId: '1',
+      tokenId: 1,
       image: nftExampleFileBase64,
     };
 
