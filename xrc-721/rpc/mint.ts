@@ -1,4 +1,4 @@
-import { initConfigurationReturnKeyPair } from '../utils/initConfig';
+import { initConfigurationReturnKeyPair } from '../../utils/initConfig';
 import * as fs from 'fs';
 import * as path from 'path';
 

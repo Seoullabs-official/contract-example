@@ -12,13 +12,15 @@ const SPACE = 'XPHERE TOKEN';
 
     const transaction = {
       cid,
-      type: 'TotalSupply',
+      type: 'Mint',
+      amount: '1000000000000000000',
+      address: keypair.address,
     };
 
-    const total_supply = await XPHERE.Rpc.request(
-      XPHERE.Rpc.signedRequest(transaction, keypair.private_key)
+    const result = await XPHERE.Rpc.broadcastTransaction(
+      XPHERE.Rpc.signedTransaction(transaction, keypair.private_key)
     );
-    console.log(total_supply);
+    console.log('Mint ::  ' + result);
   } catch (error) {
     console.error('Error:', error);
   }

@@ -1,4 +1,4 @@
-import { initConfigurationReturnKeyPair } from '../utils/initConfig';
+import { initConfigurationReturnKeyPair } from '../../utils/initConfig';
 
 import XPHERE from 'xphere';
 

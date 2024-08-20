@@ -12,13 +12,13 @@ const SPACE = 'XPHERE TOKEN';
 
     const transaction = {
       cid,
-      type: 'TotalSupply',
+      type: 'Decimals',
     };
 
-    const total_supply = await XPHERE.Rpc.request(
+    const decimal = await XPHERE.Rpc.request(
       XPHERE.Rpc.signedRequest(transaction, keypair.private_key)
     );
-    console.log(total_supply);
+    console.log(decimal);
   } catch (error) {
     console.error('Error:', error);
   }

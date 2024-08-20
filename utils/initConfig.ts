@@ -11,25 +11,25 @@ interface Keypair {
 export async function initConfigurationReturnKeyPair(): Promise<{
   keypair: Keypair;
 }> {
-  // Navigate up to the directory containing xphere-721
-  let root = path.join(path.dirname(__dirname), '..');
+  // Navigate up to the directory
+  const root = path.join(path.dirname(__dirname), '.');
 
   // Adjust paths to xphere.ini and keypair.json accordingly
-  let _input = await fs.promises.readFile(path.join(root, 'xphere.ini'), {
+  const _input = await fs.promises.readFile(path.join(root, 'xphere.ini'), {
     encoding: 'utf-8',
   });
-  let parser = new ConfigIniParser();
+  const parser = new ConfigIniParser();
 
   parser.parse(_input);
 
-  let peer = parser.get('Network', 'peers[]').replace(/^"(.*)"$/, '$1');
+  const peer = parser.get('Network', 'peers[]').replace(/^"(.*)"$/, '$1');
 
   XPHERE.Rpc.endpoint(peer);
 
-  let json = await fs.promises.readFile(path.join(root, 'keypair.json'), {
+  const json = await fs.promises.readFile(path.join(root, 'keypair.json'), {
     encoding: 'utf-8',
   });
-  let keypair: Keypair = JSON.parse(json);
+  const keypair: Keypair = JSON.parse(json);
 
   return { keypair };
 }

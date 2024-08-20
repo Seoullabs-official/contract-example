@@ -11,14 +11,16 @@ const SPACE = 'XPHERE TOKEN';
     const cid = XPHERE.Enc.cid(keypair.address, SPACE);
 
     const transaction = {
+      type: 'Transfer',
       cid,
-      type: 'TotalSupply',
+      to: 'b44760c985e486f6adc6fa3419b092c44eb207b1ba7a',
+      amount: '1000000000000000000',
     };
 
-    const total_supply = await XPHERE.Rpc.request(
-      XPHERE.Rpc.signedRequest(transaction, keypair.private_key)
+    const result = await XPHERE.Rpc.broadcastTransaction(
+      XPHERE.Rpc.signedTransaction(transaction, keypair.private_key)
     );
-    console.log(total_supply);
+    console.log('issue ::  ' + result);
   } catch (error) {
     console.error('Error:', error);
   }
