@@ -18,24 +18,24 @@ import XPHERE from 'xphere';
 (async function () {
   const SPACE = 'XPHERE TOKEN';
 
-  let root = path.join(path.dirname(__dirname), '..');
-  let _input = await fs.promises.readFile(root + '/xphere.ini', {
+  const root = path.join(path.dirname(__dirname), '..');
+  const _input = await fs.promises.readFile(root + '/xphere.ini', {
     encoding: 'utf-8',
   });
-  let parser = new ConfigIniParser();
+  const parser = new ConfigIniParser();
 
   parser.parse(_input);
 
-  let peer = parser.get('Network', 'peers[]').replace(/^"(.*)"$/, '$1');
+  const peer = parser.get('Network', 'peers[]').replace(/^"(.*)"$/, '$1');
 
   XPHERE.Rpc.endpoint(peer);
 
-  let json = await fs.promises.readFile(root + '/keypair.json', {
+  const json = await fs.promises.readFile(root + '/keypair.json', {
     encoding: 'utf-8',
   });
-  let keypair = JSON.parse(json);
+  const keypair = JSON.parse(json);
 
-  let contract = new XPHERE.SmartContract.Contract(keypair.address, SPACE);
+  const contract = new XPHERE.SmartContract.Contract(keypair.address, SPACE);
 
   contract.addMethod(
     issue({ writer: keypair.address, space: SPACE, publisher: keypair.address })

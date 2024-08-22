@@ -11,5 +11,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "allowSyntheticDefaultImports": true
-  }
+  },
+  "include": ["**/*"]
 }

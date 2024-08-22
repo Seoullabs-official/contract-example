@@ -37,8 +37,8 @@ export function issue(data: NFTParams) {
   const symbolHash = op.id_hash('symbol');
   const totalSupplyHash = op.id_hash('totalSupply');
 
-  let curName = op.read_universal('collection', nameHash, null);
-  let curSymbol = op.read_universal('collection', symbolHash, null);
+  const curName = op.read_universal('collection', nameHash, null);
+  const curSymbol = op.read_universal('collection', symbolHash, null);
 
   // writer === from
   condition = op.eq(writer, from);

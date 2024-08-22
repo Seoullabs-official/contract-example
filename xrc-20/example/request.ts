@@ -24,16 +24,15 @@ async function fetchXrcInfo(cid: string, keypair: Keypair) {
     XPHERE.Rpc.request(XPHERE.Rpc.signedRequest({ cid, ...params }, privateKey))
   );
 
-  const [name, symbol, decimals, totalSupply, balance] = await Promise.all(
-    requests
-  );
+  const [name, symbol, decimals, totalSupply, balance] =
+    await Promise.all(requests);
 
   return { name, symbol, decimals, totalSupply, balance };
 }
 
 (async function () {
   try {
-    let root = path.join(path.dirname(__dirname), '..');
+    const root = path.join(path.dirname(__dirname), '..');
     const configPath = path.join(root, 'xphere.ini');
     const keypairPath = path.join(root, 'keypair.json');
 

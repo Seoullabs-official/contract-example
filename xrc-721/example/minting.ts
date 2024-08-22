@@ -53,7 +53,7 @@ const issueContract = async (keypair: Keypair, cid: string): Promise<any> => {
 
 (async (): Promise<void> => {
   try {
-    let root = path.join(path.dirname(__dirname), '..');
+    const root = path.join(path.dirname(__dirname), '..');
     const configPath = path.join(root, 'xphere.ini');
     const keypairPath = path.join(root, 'keypair.json');
     const imagePath = path.join(__dirname, '../images', '1.jpeg');

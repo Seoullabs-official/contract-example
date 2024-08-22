@@ -10,7 +10,7 @@ const SPACE = 'XPHERE TOKEN';
 
 (async function () {
   try {
-    let root = path.join(path.dirname(__dirname), '..');
+    const root = path.join(path.dirname(__dirname), '..');
     const configPath = path.join(root, 'xphere.ini');
     const keypairPath = path.join(root, 'keypair.json');
 
